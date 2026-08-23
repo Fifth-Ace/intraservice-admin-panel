@@ -1,115 +1,134 @@
-# IntraService Admin Panel
+# IntraService Admin Panel — Community Edition
 
-Standalone administration web-panel for the **IntraService Telegram Bot**
-([intraservice-telegram-bot](https://github.com/Fifth-Ace/intraservice-telegram-bot)).
-It reads the bot's state and exposes a live dashboard — it does **not** replace
-the bot and does **not** connect to IntraService itself.
+Отдельная веб-панель-администрирование для бота
+**[IntraService Telegram Bot](https://github.com/Fifth-Ace/intraservice-telegram-bot)**.
+Панель читает внутреннее состояние бота и показывает живой дашборд. Она
+**не заменяет** бота и **не подключается** к IntraService напрямую.
 
-> This is the public, community edition. Everything sensitive (credentials,
-> real DB paths, bot internals) is intentionally excluded. Point the panel at
-> your own bot with environment variables.
+> Это публичная Community Edition. Всё чувствительное (учётные данные, реальные
+> пути к базе, внутренности бота) сознательно исключено. Укажите панели путь к
+> вашему боту через переменные окружения.
 
-## What it does
+## Возможности
 
-- live metrics from the bot's own SQLite databases (operations today, average API
-  latency, needs-attention, created-by-channel counters);
-- processing queue with the **cancel** action (only for tickets that are not yet
-  created in IntraService);
-- transport/service status lights (Official API / Telegram intake / Mail watcher /
-  AI analyzer / Playwright fallback);
-- activity log, per-source operations chart;
-- section **Settings → Connection** to view/configure IntraService and Telegram
-  connection parameters;
-- section **Settings → Access** to manage who can use the bot (names + Telegram IDs);
-- four visual themes (Aurora, Light, Dark, Minimal);
-- hash-based routing — every page has its own URL (`#/queue`, `#/settings/connect`)
-  and survives reload and browser back/forward.
+- **Живые метрики** из собственных SQLite-баз бота (операций сегодня, средний
+  ответ API, требуют внимания, заведено по каналам);
+- **Очередь обработки** с действием **«Отменить»** (только для заявок, ещё не
+  созданных в IntraService);
+- **Статус-лампочки** транспорта и сервисов (Official API / Telegram intake /
+  Mail watcher / AI analyzer / Playwright fallback);
+- **Журнал событий** и диаграмму операций по источникам;
+- раздел **Настройки → Подключение** — просмотр/настройка параметров
+  подключения к IntraService и Telegram;
+- раздел **Настройки → Доступ** — управление тем, кто может пользоваться ботом
+  (ФИО + Telegram ID);
+- четыре визуальные темы (Aurora, Светлая, Тёмная, Минимал);
+- **маршрутизация по хэшу** — у каждой страницы свой адрес (`#/queue`,
+  `#/settings/connect`), переживает перезагрузку и работает «назад/вперёд».
 
-## Requirements
+## Требования
 
-- Node.js ≥ 22.5
-- the bot's databases must be readable (`sqlite3` CLI available on the host)
-- a running **intraservice-telegram-bot** deployment (or an empty stub for a look)
+- Node.js ≥ 22.5;
+- базы бота должны быть читаемы (на хосте доступна `sqlite3`);
+- развёрнутый **intraservice-telegram-bot** (или пустая заглушка для просмотра).
 
-## Install as a module next to the bot
+## Быстрая установка (модулем рядом с ботом)
 
-Put this panel and the bot in **sibling directories**, then point the panel at
-the bot via environment variables:
+Разместите панель и бота **в соседних каталогах**, затем укажите панели путь к
+боту через переменные окружения:
 
 ```
 parent/
-├── intraservice-server-bot/     # the Telegram bot (any repo layout)
-└── intraservice-admin-panel/    # this panel
+├── intraservice-server-bot/     # Telegram-бот (любая схема каталогов)
+└── intraservice-admin-panel/    # данная панель
 ```
 
 ```bash
 cd intraservice-admin-panel
-npm install        # no deps at runtime, but set up anyway
-npm run bootstrap-admin   # creates data/auth.json, reads the initial password interactively
+npm install
+npm run bootstrap-admin   # создаёт data/auth.json, читает начальный пароль
 ```
 
-Default bot paths resolve to `../intraservice-server-bot` relative to the panel.
-Override with environment variables if your layout differs:
+Пути к базе по умолчанию разрешаются относительно панели: `../intraservice-server-bot`.
+Переопределите переменными окружения, если ваша схема иная:
 
-| Env | Default | Meaning |
+| Переменная | По умолчанию | Назначение |
 |---|---|---|
-| `PANEL_BOT_DIR` | `../intraservice-server-bot` | root dir of the bot |
-| `PANEL_BOT_DB` | `<bot>/data/intake.sqlite3` | intake / audit database |
-| `PANEL_MAIL_DB` | `<bot>/data/mail_watcher.sqlite3` | mail-watcher database |
-| `PANEL_HOST` | `0.0.0.0` | listen host |
-| `PANEL_PORT` | `9120` | listen port |
-| `PANEL_AUTH_FILE` | `data/auth.json` | auth store location |
-| `PANEL_TRUST_PROXY` | `0` | set `1` only behind a trusted reverse proxy |
+| `PANEL_BOT_DIR` | `../intraservice-server-bot` | корень каталога бота |
+| `PANEL_BOT_DB` | `<бот>/data/intake.sqlite3` | база intake / аудита |
+| `PANEL_MAIL_DB` | `<бот>/data/mail_watcher.sqlite3` | база mail-наблюдателя |
+| `PANEL_HOST` | `0.0.0.0` | адрес прослушивания |
+| `PANEL_PORT` | `9120` | порт прослушивания |
+| `PANEL_AUTH_FILE` | `data/auth.json` | файл хранилища учётной записи |
+| `PANEL_TRUST_PROXY` | `0` | `1` только за доверенным реверс-прокси |
+
+## Проверка и запуск
 
 ```bash
-npm run check   # syntax checks
-npm test        # auth self-test
+npm run check   # синтаксис всех файлов
+npm test        # самопроверка авторизации (не трогает данные)
 npm start
 ```
 
-## Commands
+Слушатель по умолчанию: `0.0.0.0:9120`. Переопределяется через `PANEL_HOST` и
+`PANEL_PORT`.
 
-- `npm run check` — syntax lint of all sources;
-- `npm test` — authentication self-test (no live data touched);
-- `npm run bootstrap-admin` — create the local admin account (refuses to overwrite);
-- `npm start` — run the panel.
+## Основные разделы и маршруты
 
-## Authentication & transport security
+| Раздел | Адрес | Что показывает |
+|---|---|---|
+| Дашборд | `#/` | Ключевые метрики, диаграмма, статусы, очередь |
+| Операции | `#/operations` | Операции по источникам |
+| Очереди | `#/queue` | Ожидающие подтверждения заявки + «Отменить» |
+| Сервисы | `#/services` | Состояние транспорта и сервисов |
+| Журнал | `#/log` | Аудит событий |
+| Настройки | `#/settings` | Вкладки: Дашборд, Основное, Доступ, Подключение |
 
-- local admin account, initial password bootstrap (only a salted `scrypt` hash
-  stored on disk);
-- mandatory password change before dashboard access;
-- in-memory eight-hour sessions in `HttpOnly` / `SameSite=Strict` cookies;
-- CSRF protection on every state-changing request;
-- login rate limiting and temporary lockout;
-- restrictive security headers + `Cache-Control: no-store`.
+## Документация
 
-Password submission / password change is accepted only when the request is HTTPS,
-arrives from loopback, or a trusted proxy declares `X-Forwarded-Proto: https`
-(`PANEL_TRUST_PROXY=1`). Do **not** set `PANEL_ALLOW_INSECURE_AUTH=1` outside
-isolated tests.
+| Документ | Содержание |
+|---|---|
+| [Полный мануал (русский)](docs/ru/MANUAL.md) | Установка, настройка, разделы, подключение к боту, очередь, systemd, решение проблем |
+| [Full manual (English)](docs/en/MANUAL.md) | Complete installation and administration guide |
+| [SECURITY.md](SECURITY.md) | Правила безопасности и сообщение об уязвимостях |
 
-## Cancelling a queued ticket
+## Авторизация и безопасность транспорта
 
-The cancel action is a thin mirror of the bot's own two-row update: it can only
-cancel tickets still in `preview` / `needs_clarification`. Already-created tickets
-(with an `intra_id`) are **never** cancelled from the panel — closing those is the
-bot's job.
+- локальная учётная запись администратора, начальный пароль при
+  `bootstrap-admin` (на диске — только `scrypt`-хэш);
+- обязательная смена пароля перед входом в дашборд;
+- 8-часовые сессии в памяти в `HttpOnly` / `SameSite=Strict` cookie;
+- CSRF-защита всех изменяющих запросов;
+- ограничение попыток входа и временная блокировка;
+- строгие браузерные заголовки безопасности + `Cache-Control: no-store`.
 
-## Safety boundary
+Приём пароля / смена пароля возможны только когда запрос идёт по HTTPS, приходит
+с loopback, либо доверенный прокси объявляет `X-Forwarded-Proto: https`
+(`PANEL_TRUST_PROXY=1`). Не выставляйте `PANEL_ALLOW_INSECURE_AUTH=1` за
+пределами изолированных тестов.
 
-The public edition is read-only with respect to the bot except for the explicit
-queue-cancel action. It never:
+## Отмена заявки из очереди
 
-- writes into bot databases beyond the documented cancel;
-- holds bot credentials (token / password are read masked and are never echoed);
-- connects to IntraService or performs mutations;
-- exposes bot journals with ticket/personal data.
+«Отменить» — это тонкое зеркало двух обновлений самого бота: отменять можно
+только заявки в статусах `preview` / `needs_clarification`. Уже созданные заявки
+(с `intra_id`) из панели **никогда** не отменяются — их закрытие остаётся за
+ботом.
 
-## License
+## Граница безопасности
 
-MIT — see `LICENSE`.
+Публичная редакция читает базы бота, а пишет только в явном действии отмены
+заявки из очереди. Она никогда:
 
-## Related
+- не пишет в базы бота за пределами задокументированной отмены;
+- не хранит учётные данные бота (токен / пароль читаются замаскированно и не
+  выводятся);
+- не подключается к IntraService и не выполняет мутации;
+- не выставляет наружу журналы с данными заявок и пользователей.
+
+## Лицензия
+
+MIT — см. `LICENSE`.
+
+## Связанное
 
 - [IntraService Telegram Bot (public)](https://github.com/Fifth-Ace/intraservice-telegram-bot)
