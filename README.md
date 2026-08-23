@@ -1,9 +1,19 @@
 # IntraService Admin Panel — Community Edition
 
+[Русский](README.md) | [English](README.en.md)
+
 Отдельная веб-панель-администрирование для бота
 **[IntraService Telegram Bot](https://github.com/Fifth-Ace/intraservice-telegram-bot)**.
-Панель читает внутреннее состояние бота и показывает живой дашборд. Она
+Панель читает внутренние базы бота и показывает живой дашборд: метрики, очередь
+с отменой, состояние сервисов, журнал и настройки подключения. Она
 **не заменяет** бота и **не подключается** к IntraService напрямую.
+
+[![CI](https://github.com/Fifth-Ace/intraservice-admin-panel/actions/workflows/ci.yml/badge.svg)](https://github.com/Fifth-Ace/intraservice-admin-panel/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/Fifth-Ace/intraservice-admin-panel)](https://github.com/Fifth-Ace/intraservice-admin-panel/releases)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+> Независимый community-проект. Он не связан с разработчиками IntraService или
+> Telegram.
 
 > Это публичная Community Edition. Всё чувствительное (учётные данные, реальные
 > пути к базе, внутренности бота) сознательно исключено. Укажите панели путь к
@@ -91,6 +101,8 @@ npm start
 | [Полный мануал (русский)](docs/ru/MANUAL.md) | Установка, настройка, разделы, подключение к боту, очередь, systemd, решение проблем |
 | [Full manual (English)](docs/en/MANUAL.md) | Complete installation and administration guide |
 | [SECURITY.md](SECURITY.md) | Правила безопасности и сообщение об уязвимостях |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | Требования к изменениям и pull requests |
+| [Releases](https://github.com/Fifth-Ace/intraservice-admin-panel/releases) | Опубликованные версии и примечания к релизам |
 
 ## Авторизация и безопасность транспорта
 

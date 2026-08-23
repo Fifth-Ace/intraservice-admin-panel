@@ -8,6 +8,7 @@
     "start": "node server.mjs",
     "check": "node --check server.mjs && node --check auth.mjs && node --check auth-pages.mjs && node --check tools/bootstrap-admin.mjs && node --check tools/auth-self-test.mjs",
     "test": "node tools/auth-self-test.mjs",
+    "ci": "npm run check && npm test",
     "bootstrap-admin": "node tools/bootstrap-admin.mjs"
   },
   "engines": {"node": ">=22.5"}
