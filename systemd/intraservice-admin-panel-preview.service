@@ -1,0 +1,26 @@
+[Unit]
+Description=IntraService Admin Panel beta
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/intraservice-admin-panel
+ExecStart=/usr/bin/node /opt/intraservice-admin-panel/server.mjs
+Environment=PANEL_HOST=127.0.0.1
+Environment=PANEL_PORT=9120
+Environment=PANEL_TRUST_PROXY=1
+Restart=on-failure
+RestartSec=3
+TimeoutStopSec=10
+KillMode=mixed
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=read-only
+ReadWritePaths=/opt/intraservice-admin-panel/data
+LockPersonality=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+
+[Install]
+WantedBy=default.target

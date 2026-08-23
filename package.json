@@ -1,0 +1,14 @@
+{
+  "name": "intraservice-admin-panel",
+  "version": "0.1.0-beta.1",
+  "private": true,
+  "type": "module",
+  "description": "Optional standalone administration panel for IntraService Telegram Bot",
+  "scripts": {
+    "start": "node server.mjs",
+    "check": "node --check server.mjs && node --check auth.mjs && node --check auth-pages.mjs && node --check tools/bootstrap-admin.mjs && node --check tools/auth-self-test.mjs",
+    "test": "node tools/auth-self-test.mjs",
+    "bootstrap-admin": "node tools/bootstrap-admin.mjs"
+  },
+  "engines": {"node": ">=22.5"}
+}
