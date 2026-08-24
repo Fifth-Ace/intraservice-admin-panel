@@ -5,9 +5,8 @@ A standalone administration web-panel for the
 The panel reads the bot's own databases and exposes a live dashboard; it does
 **not** modify tickets in IntraService directly and does **not** replace the bot.
 
-This manual covers the **Community Edition**. Some actions (connection setup,
-access management) may be read-only in the beta and are performed by the bot
-itself in production.
+This manual covers the **Community Edition**. Connection and access tabs are
+read-only; edit those values in the bot's own configuration.
 
 ## Contents
 
@@ -155,8 +154,8 @@ Settings → Connection (`#/settings/connect`) shows two groups:
 - **Telegram settings** — bot token (masked), admin Chat ID.
 
 The token and password are read **masked** (only "set / not set" is visible) and
-are never echoed in responses or logs. If a secret is already set, leave its field
-empty — it will not be overwritten on save.
+are never echoed in responses or logs. This tab does not save changes; edit the
+values in the bot's own configuration.
 
 ## 10. Queue & cancelling a ticket
 
@@ -271,7 +270,7 @@ enable `PANEL_ALLOW_INSECURE_AUTH=1` outside isolated tests.
 
 ## 17. Current limitations
 
-- beta: connection and access management may be read-only in the public edition;
+- connection and access management are read-only in the public edition;
 - the panel never performs IntraService mutations;
 - the mail queue counts unique tickets in `mail_watcher.sqlite3` over the last 24
   hours;

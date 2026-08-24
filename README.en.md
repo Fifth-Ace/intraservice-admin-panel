@@ -5,7 +5,7 @@
 A standalone administration web-panel for the
 **[IntraService Telegram Bot](https://github.com/Fifth-Ace/intraservice-telegram-bot)**.
 It reads the bot's own databases and exposes a live dashboard: metrics, a queue
-with cancel, service status, a journal and connection settings. It does **not**
+with cancel, service status, a journal and a safe configuration overview. It does **not**
 replace the bot and does **not** connect to IntraService directly.
 
 [![CI](https://github.com/Fifth-Ace/intraservice-admin-panel/actions/workflows/ci.yml/badge.svg)](https://github.com/Fifth-Ace/intraservice-admin-panel/actions/workflows/ci.yml)
@@ -28,12 +28,16 @@ replace the bot and does **not** connect to IntraService directly.
 - **Transport/service status lights** (Official API / Telegram intake /
   Mail watcher / AI analyzer / Playwright fallback);
 - **Activity log** and a per-source operations chart;
-- **Settings → Connection** — view/configure IntraService and Telegram
-  connection parameters;
-- **Settings → Access** — manage who may use the bot (name + Telegram ID);
+- **Settings → Connection** — safely view IntraService and Telegram parameters
+  without exposing tokens or passwords;
+- **Settings → Access** — view the allowed-user list (name + Telegram ID);
 - four visual themes (Aurora, Light, Dark, Minimal);
 - **hash-based routing** — every page has its own URL (`#/queue`,
   `#/settings/connect`), survives reload and works with back/forward.
+
+> In the current release, connection and access tabs are read-only. The panel's
+> only administrative write to bot databases is an explicit cancellation of a
+> queued ticket that has not yet been created.
 
 ## Requirements
 
@@ -57,6 +61,10 @@ cd intraservice-admin-panel
 npm install
 npm run bootstrap-admin   # creates data/auth.json, reads the initial password
 ```
+
+The portable environment-variable reference is published as
+[`.env.example`](.env.example). The panel does not load `.env` automatically;
+pass values through the process environment or a systemd unit.
 
 By default bot DB paths resolve relative to the panel as `../intraservice-server-bot`.
 Override with environment variables if your layout differs:

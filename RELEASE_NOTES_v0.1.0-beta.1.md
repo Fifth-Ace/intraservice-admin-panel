@@ -23,7 +23,7 @@
 ```bash
 git fetch --tags
 git switch --detach v0.1.0-beta.1
-npm ci
+npm install
 npm run bootstrap-admin
 npm run ci
 ```
