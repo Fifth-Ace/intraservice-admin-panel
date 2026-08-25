@@ -35,9 +35,8 @@ replace the bot and does **not** connect to IntraService directly.
 - **hash-based routing** — every page has its own URL (`#/queue`,
   `#/settings/connect`), survives reload and works with back/forward.
 
-> In the current release, connection and access tabs are read-only. The panel's
-> only administrative write to bot databases is an explicit cancellation of a
-> queued ticket that has not yet been created.
+> Configuration writes are disabled by default. When explicitly enabled, changes
+> require preview and confirmation, create a backup and are written atomically.
 
 ## Requirements
 
@@ -134,11 +133,12 @@ job.
 
 ## Safety boundary
 
-The public edition is read-only with respect to the bot except for the explicit
-queue-cancel action. It never:
+The public edition reads bot databases except for queue cancellation. Optional
+configuration writes are explicitly gated and limited to documented files. It never:
 
 - writes into bot DBs beyond the documented cancel;
-- holds bot credentials (token / password are read masked and never echoed);
+- returns or logs token/password values; local env backups created by the opt-in
+  writer are mode `0600` under `data/config-backups`;
 - connects to IntraService or performs mutations;
 - exposes bot journals with ticket or personal data.
 

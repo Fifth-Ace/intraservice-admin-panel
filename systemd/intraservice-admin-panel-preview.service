@@ -9,6 +9,9 @@ ExecStart=/usr/bin/node /opt/intraservice-admin-panel/server.mjs
 Environment=PANEL_HOST=127.0.0.1
 Environment=PANEL_PORT=9120
 Environment=PANEL_TRUST_PROXY=1
+# Configuration writes are opt-in. If enabled, also extend ReadWritePaths to
+# the bot directory after reviewing the security boundary.
+# Environment=PANEL_ENABLE_CONFIG_WRITE=1
 Restart=on-failure
 RestartSec=3
 TimeoutStopSec=10

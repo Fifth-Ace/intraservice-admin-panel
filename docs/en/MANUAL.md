@@ -5,8 +5,9 @@ A standalone administration web-panel for the
 The panel reads the bot's own databases and exposes a live dashboard; it does
 **not** modify tickets in IntraService directly and does **not** replace the bot.
 
-This manual covers the **Community Edition**. Connection and access tabs are
-read-only; edit those values in the bot's own configuration.
+This manual covers the **Community Edition**. Connection and access tabs can
+safely update configuration and the whitelist when `PANEL_ENABLE_CONFIG_WRITE=1`
+is explicitly enabled.
 
 ## Contents
 
@@ -153,9 +154,9 @@ Settings → Connection (`#/settings/connect`) shows two groups:
 - **IntraService settings** — system URL, login, password (password is masked);
 - **Telegram settings** — bot token (masked), admin Chat ID.
 
-The token and password are read **masked** (only "set / not set" is visible) and
-are never echoed in responses or logs. This tab does not save changes; edit the
-values in the bot's own configuration.
+The token and password are read **masked**. Empty fields preserve current secrets.
+Saving requires preview and confirmation, creates a backup, writes atomically and
+restarts allowlisted services.
 
 ## 10. Queue & cancelling a ticket
 
@@ -207,7 +208,9 @@ systemctl --user restart intraservice-admin-panel-preview.service
 
 The panel creates **no own ticket data** — it reads the bot's databases. Backup
 the bot's DBs with the bot's own tooling (e.g. `safe-backup`). The panel auth
-store is `data/auth.json` (copy it when migrating).
+store is `data/auth.json`. With configuration writes enabled, backups of changed
+config/env files are stored under `data/config-backups` with mode `0600`. This
+directory contains secrets and must never be published or served over HTTP.
 
 ## 14. Testing
 
@@ -270,7 +273,8 @@ enable `PANEL_ALLOW_INSECURE_AUTH=1` outside isolated tests.
 
 ## 17. Current limitations
 
-- connection and access management are read-only in the public edition;
+- configuration writes are disabled by default and require the explicit
+  `PANEL_ENABLE_CONFIG_WRITE=1` opt-in plus write permission to the bot directory;
 - the panel never performs IntraService mutations;
 - the mail queue counts unique tickets in `mail_watcher.sqlite3` over the last 24
   hours;

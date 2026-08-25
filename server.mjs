@@ -5,6 +5,7 @@ import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import {loadAccount,saveAccount,hashPassword,verifyPassword,passwordPolicy,SessionStore,LoginLimiter,parseCookies,randomToken} from './auth.mjs';
 import {renderAuthPage,renderSetupRequired} from './auth-pages.mjs';
+import {PanelConfigStore} from './panel_config.mjs';
 
 const project=path.dirname(fileURLToPath(import.meta.url));
 const dashboardFile=path.join(project,'docs','index.html');
@@ -14,9 +15,14 @@ const mailDb=process.env.PANEL_MAIL_DB||path.join(project,'..','intraservice-ser
 const botDir=process.env.PANEL_BOT_DIR||path.join(project,'..','intraservice-server-bot');
 const botConfigFile=path.join(botDir,'config.json');
 const botEnvFile=path.join(botDir,'data','intraservice.env');
+const intakeEnvFile=path.join(botDir,'data','intake.env');
 const botParserFile=path.join(botDir,'intake_parser.mjs');
+const panelAccessFile=process.env.PANEL_ACCESS_FILE||path.join(project,'data','panel-access.json');
+const configBackupDir=process.env.PANEL_CONFIG_BACKUP_DIR||path.join(project,'data','config-backups');
 const host=process.env.PANEL_HOST||'0.0.0.0',port=Number(process.env.PANEL_PORT||9120);
 const sessions=new SessionStore(),limiter=new LoginLimiter(),loginTokens=new Map();
+const configWriteEnabled=process.env.PANEL_ENABLE_CONFIG_WRITE==='1',configRestartEnabled=process.env.PANEL_RESTART_SERVICES!=='0';
+const configStore=new PanelConfigStore({configFile:botConfigFile,intraEnvFile:botEnvFile,intakeEnvFile,parserFile:botParserFile,accessFile:panelAccessFile,backupDir:configBackupDir}),configPreviews=new Map();
 let account=null;
 try{account=await loadAccount(authFile)}catch(error){if(error.code!=='ENOENT')throw error}
 
@@ -37,16 +43,19 @@ function dbWrite(sql,params=[]){
  // write access for admin actions (queue cancel) — mirrors bot's own queries exactly
  return dbQ(botDb,false,sql,params);
 }
+let serviceCache={at:0,map:{}};
+function liveServices(){if(Date.now()-serviceCache.at<10000)return serviceCache.map;const units=['intraservice-intake-bot.service','intraservice-mail-watcher.service','intraservice-shadow-analyzer.service','intraservice-command-analyzer.service','intraservice-bot.service'];try{const out=execFileSync('systemctl',['--user','show',...units,'-p','Id','-p','ActiveState','-p','SubState','--no-pager'],{encoding:'utf8',timeout:5000}),map={};for(const block of out.trim().split(/\n\s*\n/u)){const row=Object.fromEntries(block.split('\n').map(x=>x.split('=',2)));if(row.Id)map[row.Id]={active:row.ActiveState==='active'&&row.SubState==='running',state:`${row.ActiveState||'unknown'}/${row.SubState||'unknown'}`}}serviceCache={at:Date.now(),map};return map}catch{return serviceCache.map}}
 function realMetrics(){
- const now=new Date(),today=now.toISOString().slice(0,10),sod=today+'T00:00:00Z',eod=new Date(today+'T23:59:59Z').toISOString();
+ const now=new Date(),today=now.toISOString().slice(0,10),sod=today+'T00:00:00Z',eod=new Date(today+'T23:59:59Z').toISOString(),apiSince=new Date(now.getTime()-24*60*60*1000).toISOString();
  const agg=botDbOne(`
   SELECT
    (SELECT COUNT(*) FROM audit_log WHERE created_at>=? AND created_at<?) AS ops,
-   (SELECT ROUND(AVG(duration_ms)) FROM audit_log WHERE source='official_api' AND duration_ms>0 AND created_at>=?) AS api_lat,
+   (SELECT ROUND(AVG(duration_ms)) FROM audit_log WHERE source='official_api' AND action='api_primary_read' AND result='ok' AND duration_ms>0 AND created_at>=?) AS api_lat,
+   (SELECT COUNT(*) FROM audit_log WHERE source='official_api' AND action='api_primary_read' AND result='ok' AND duration_ms>0 AND created_at>=?) AS api_samples,
    (SELECT COUNT(*) FROM intake_messages WHERE status IN ('needs_clarification','preview')) AS attn,
    (SELECT COUNT(*) FROM intake_messages WHERE status='preview') AS tg,
    (SELECT COUNT(*) FROM shadow_analyses WHERE status='pending')+(SELECT COUNT(*) FROM command_analyses WHERE status='pending') AS ai,
-   (SELECT COUNT(*) FROM audit_log WHERE source='official_api' AND result='ok' AND created_at>=?) AS api_ok,
+   (SELECT COUNT(*) FROM audit_log WHERE source='official_api' AND action='api_primary_read' AND result='ok' AND created_at>=?) AS api_ok,
    (SELECT COUNT(*) FROM audit_log WHERE source='playwright' AND created_at>=?) AS pw,
    (SELECT COUNT(*) FROM audit_log WHERE source='hybrid' AND created_at>=?) AS hybrid,
    (SELECT COUNT(*) FROM audit_log WHERE source='notebook' AND created_at>=?) AS nb,
@@ -55,11 +64,10 @@ function realMetrics(){
    (SELECT COUNT(*) FROM audit_log WHERE action='create_ticket' AND tg_user_id<>'' AND created_at>=?) AS ctg_day,
    (SELECT COUNT(*) FROM audit_log WHERE action='create_ticket' AND tg_user_id<>'') AS ctg_total,
    (SELECT COUNT(*) FROM audit_log WHERE action='create_ticket' AND (tg_user_id IS NULL OR tg_user_id='') AND created_at>=?) AS cman_day,
-   (SELECT COUNT(*) FROM audit_log WHERE action='create_ticket' AND (tg_user_id IS NULL OR tg_user_id='')) AS cman_total,
-   (SELECT COUNT(*) FROM audit_log WHERE created_at>=?) AS total
- `,[sod,eod,sod,sod,sod,sod,sod,sod,sod,sod]);
+   (SELECT COUNT(*) FROM audit_log WHERE action='create_ticket' AND (tg_user_id IS NULL OR tg_user_id='')) AS cman_total
+ `,[sod,eod,apiSince,apiSince,apiSince,sod,sod,sod,sod,sod,sod]);
  const mk=n=>Number(n)||0;
- const total=mk(agg.total)||mk(agg.api_ok)+mk(agg.pw)+mk(agg.hybrid)+mk(agg.nb);
+ const total=mk(agg.ops);
  const chart={api:mk(agg.api_ok),web:mk(agg.pw)+mk(agg.hybrid),notebook:mk(agg.nb),other:Math.max(0,total-(mk(agg.api_ok)+mk(agg.pw)+mk(agg.hybrid)+mk(agg.nb)))};
  // real mail queue: unique, unassigned, fresh (last 24h) mail tickets from mail_watcher db
  let mailQueue=0;try{const mo=dbQ(mailDb,true,"SELECT COUNT(DISTINCT task_id) c FROM deliveries WHERE status='Открыта' AND sent_at>=datetime('now','-1 day')");mailQueue=Number((JSON.parse(mo)[0]||{}).c)||0}catch(e){/* mail db may be absent */mailQueue=0}
@@ -70,10 +78,12 @@ function realMetrics(){
  const needAttn=mk(agg.attn),opsToday=total;
  const events=botDbQ("SELECT action,source,result,created_at FROM audit_log ORDER BY id DESC LIMIT 6");
  const eventList=events?JSON.parse(events):[];
+ const serviceMap=liveServices(),svc=(unit,name,sub)=>{const row=serviceMap[unit],active=Boolean(row?.active);return{name,sub,status:active?'ok':'warn',latency:active?'active':(row?.state||'недоступен')}};
  return {
   uptime:Math.floor(process.uptime()),
   operationsToday:opsToday,
   avgApiMs:apiLat,
+  apiSamples:mk(agg.api_samples),
   activeQueue:queueTotal,
   needsAttention:needAttn,
   queue:{telegram:mk(agg.tg),mail:mailQueue,ai:mk(agg.ai),total:queueTotal},
@@ -83,11 +93,12 @@ function realMetrics(){
   },
   chart,
   services:[
-   {name:'Official API',sub:'Основной транспорт',status:mk(agg.api_ok)>0?'ok':'idle',latency:apiLat?apiLat+' мс':'нет данных'},
-   {name:'Telegram intake',sub:'Приём и управление',status:mk(agg.tg)>0?'ok':(opsToday>0?'ok':'idle'),latency:opsToday>0?'online':'ожидает'},
-   {name:'Mail watcher',sub:'Почтовые заявки',status:mailActive>0?'ok':'idle',latency:mailActive>0?(mailQueue>0?mailQueue+' в очереди':'online'):'ожидает'},
-   {name:'AI analyzer',sub:'Анализ заявок',status:'ok',latency:mk(agg.ai)>0?mk(agg.ai)+' в очереди':'idle'},
-   {name:'Playwright',sub:'Аварийный резерв',status:mk(agg.pw)>0?'backup':'idle',latency:mk(agg.pw)>0?mk(agg.pw)+' опер. сегодня':'ожидает'}
+   {name:'Official API',sub:'Основной транспорт · audit_log',status:mk(agg.api_ok)>0?'ok':'idle',latency:apiLat?apiLat+' мс':'нет операций'},
+   svc('intraservice-intake-bot.service','Telegram intake','Приём и управление заявками'),
+   svc('intraservice-mail-watcher.service','Mail watcher','Почтовые заявки'),
+   (()=>{const a=serviceMap['intraservice-shadow-analyzer.service']?.active,b=serviceMap['intraservice-command-analyzer.service']?.active;return{name:'AI analyzers',sub:'Shadow + command',status:a&&b?'ok':'warn',latency:a&&b?'active':'проверь сервисы'}})(),
+   svc('intraservice-bot.service','Планировщик','Плановые заявки и одобрение'),
+   {name:'Playwright',sub:'Аварийный резерв',status:mk(agg.pw)>0?'backup':'idle',latency:mk(agg.pw)>0?mk(agg.pw)+' опер. сегодня':'не использовался'}
   ],
   operations:eventList.map(e=>({icon:labelIcon(e.action),title:labelTitle(e.action),sub:labelSub(e.source,e.result,e.action),time:timeAgo(e.created_at)})),
   log:eventList.map(e=>({icon:labelIcon(e.action),title:labelTitle(e.action),sub:labelSub(e.source,e.result,e.action),time:timeAgo(e.created_at)}))
@@ -146,6 +157,14 @@ async function readForm(req){
  let size=0,body='';for await(const chunk of req){size+=chunk.length;if(size>16*1024)throw Object.assign(new Error('Request too large'),{status:413});body+=chunk.toString('utf8')}
  return Object.fromEntries(new URLSearchParams(body));
 }
+async function readJson(req){
+ if(!String(req.headers['content-type']||'').startsWith('application/json'))throw Object.assign(new Error('Unsupported content type'),{status:415});
+ let size=0,body='';for await(const chunk of req){size+=chunk.length;if(size>64*1024)throw Object.assign(new Error('Request too large'),{status:413});body+=chunk.toString('utf8')}
+ try{return JSON.parse(body||'{}')}catch{throw Object.assign(new Error('Некорректный JSON'),{status:400})}
+}
+function cleanPreviews(){const now=Date.now();for(const [token,row] of configPreviews)if(row.expiresAt<=now)configPreviews.delete(token)}
+function restartConfiguredServices(){const units=['intraservice-intake-bot.service','intraservice-mail-watcher.service','intraservice-bot.service'];execFileSync('systemctl',['--user','restart',...units],{encoding:'utf8',timeout:60000});return units.map(unit=>({unit,active:execFileSync('systemctl',['--user','is-active',unit],{encoding:'utf8',timeout:10000}).trim()==='active'}))}
+async function settingsAudit(session,changed){const file=path.join(project,'data','settings-audit.log'),line=JSON.stringify({at:new Date().toISOString(),actor:session.username,changed})+'\n';await fs.mkdir(path.dirname(file),{recursive:true,mode:0o700});await fs.appendFile(file,line,{encoding:'utf8',mode:0o600});await fs.chmod(file,0o600)}
 function issueLoginToken(res,secure){
  const token=randomToken();loginTokens.set(token,Date.now()+10*60*1000);
  for(const [key,expires] of loginTokens)if(expires<Date.now())loginTokens.delete(key);
@@ -201,8 +220,29 @@ const server=http.createServer(async(req,res)=>{
   }
   if(url.pathname==='/api/config'&&req.method==='GET'){
     const session=getSession(req);if(!session)return send(res,401,JSON.stringify({error:'Unauthorized'}),'application/json; charset=utf-8');
-    let data;try{data=await readBotConfig()}catch(e){return send(res,502,JSON.stringify({ok:false,error:String(e.message)}),'application/json; charset=utf-8')}
-    return send(res,200,JSON.stringify({ok:true,...data}),'application/json; charset=utf-8');
+    let data;try{data=await configStore.read()}catch(e){return send(res,502,JSON.stringify({ok:false,error:String(e.message)}),'application/json; charset=utf-8')}
+    const {_raw,...safe}=data;safe.db={intake:await fileExists(botDb),mail:await fileExists(mailDb)};
+    return send(res,200,JSON.stringify({ok:true,writeEnabled:configWriteEnabled,...safe}),'application/json; charset=utf-8');
+  }
+  if(url.pathname==='/api/config/preview'&&req.method==='POST'){
+    const session=getSession(req);if(!session)return send(res,401,JSON.stringify({error:'Unauthorized'}),'application/json; charset=utf-8');
+    if(!configWriteEnabled)return send(res,403,JSON.stringify({ok:false,error:'Запись настроек отключена администратором'}),'application/json; charset=utf-8');
+    if(!maySubmitSecret(req))return send(res,426,JSON.stringify({ok:false,error:'Настройки можно менять только через HTTPS'}),'application/json; charset=utf-8');
+    const body=await readJson(req);if(body._csrf!==session.csrf)return send(res,403,JSON.stringify({ok:false,error:'CSRF failed'}),'application/json; charset=utf-8');
+    let prepared;try{prepared=await configStore.preview(body)}catch(e){return send(res,Number(e.status)||400,JSON.stringify({ok:false,error:String(e.message)}),'application/json; charset=utf-8')}
+    cleanPreviews();const token=randomToken(),expiresAt=Date.now()+10*60*1000;configPreviews.set(token,{sessionId:session.id,prepared,expiresAt});
+    return send(res,200,JSON.stringify({ok:true,previewToken:token,summary:prepared.summary,expiresAt:new Date(expiresAt).toISOString()}),'application/json; charset=utf-8');
+  }
+  if(url.pathname==='/api/config/apply'&&req.method==='POST'){
+    const session=getSession(req);if(!session)return send(res,401,JSON.stringify({error:'Unauthorized'}),'application/json; charset=utf-8');
+    if(!configWriteEnabled)return send(res,403,JSON.stringify({ok:false,error:'Запись настроек отключена администратором'}),'application/json; charset=utf-8');
+    if(!maySubmitSecret(req))return send(res,426,JSON.stringify({ok:false,error:'Настройки можно менять только через HTTPS'}),'application/json; charset=utf-8');
+    const body=await readJson(req);if(body._csrf!==session.csrf)return send(res,403,JSON.stringify({ok:false,error:'CSRF failed'}),'application/json; charset=utf-8');cleanPreviews();
+    const key=String(body.previewToken||''),pending=configPreviews.get(key);if(!pending||pending.sessionId!==session.id)return send(res,409,JSON.stringify({ok:false,error:'Предпросмотр истёк или принадлежит другой сессии'}),'application/json; charset=utf-8');configPreviews.delete(key);
+    let applied;try{applied=await configStore.apply(pending.prepared)}catch(e){return send(res,Number(e.status)||500,JSON.stringify({ok:false,error:String(e.message)}),'application/json; charset=utf-8')}
+    let services=configRestartEnabled?[]:[{unit:'restart-disabled',active:true}];if(configRestartEnabled)try{services=restartConfiguredServices()}catch{services=[{unit:'restart',active:false,error:'Не удалось перезапустить сервисы'}]}
+    await settingsAudit(session,applied.changed).catch(()=>{});
+    return send(res,200,JSON.stringify({ok:true,changed:applied.changed,revision:applied.revision,services}),'application/json; charset=utf-8');
   }
   if(url.pathname==='/api/queue'&&req.method==='GET'){
     const session=getSession(req);if(!session)return send(res,401,JSON.stringify({error:'Unauthorized'}),'application/json; charset=utf-8');

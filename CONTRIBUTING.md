@@ -8,7 +8,6 @@
    profiles, databases or logs are present in the diff.
 6. Open a pull request describing safety implications.
 
-The panel reads the bot's databases read-only except for the explicit
-queue-cancel action. Any change must preserve that boundary: no new writes into
-bot databases, no IntraService mutations, and credentials must stay masked in
-responses and logs.
+The panel reads bot databases except for queue cancellation. Configuration writes
+must stay explicitly gated and allowlisted, with preview, backup, atomic write,
+CSRF protection and masked credentials. IntraService ticket mutations are out of scope.

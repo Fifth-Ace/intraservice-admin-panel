@@ -31,6 +31,7 @@ and requires a session plus a CSRF token.
 
 ## Boundary
 
-The public edition is read-only with respect to the bot except for the explicit
-queue-cancel action. It never connects to IntraService, never performs IntraService
-mutations, and never exposes bot journals with ticket or personal data.
+The public edition is read-only by default except for queue cancellation. The
+optional configuration writer is explicitly gated, allowlisted, CSRF-protected,
+previewed, backed up and atomic. It never performs IntraService ticket mutations
+or exposes secret values and personal journals.

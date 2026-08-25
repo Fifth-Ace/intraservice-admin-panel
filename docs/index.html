@@ -78,7 +78,9 @@ html[data-theme="aurora"] .queue-stats div{background:linear-gradient(145deg,rgb
 .kv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:9px;margin-top:10px}.kv-grid .kv{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 12px}.kv-grid .kv b{display:block;font-size:12px;color:var(--text)}.kv-grid .kv span{display:block;font-size:10px;color:var(--muted);margin-top:3px;word-break:break-all}.kv-grid .kv .ok{color:var(--green);font-weight:700}.people-list{display:grid;gap:8px;margin-top:10px}.people-list .person{display:flex;justify-content:space-between;align-items:center;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 12px}.people-list .person b{font-size:12px}.people-list .person span{font-size:10px;color:var(--muted)}
 .people-edit{margin-top:6px}.people-add{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}.people-add input{flex:1;min-width:160px;height:34px;padding:0 12px;border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:8px;font-size:12px}.people-add button{height:34px}
 .people-list .person .p-id{font-size:10px;color:var(--muted);font-variant-numeric:tabular-nums}.person-actions{display:flex;gap:6px}.person-actions button{height:26px;padding:0 10px;font-size:10px;border:1px solid var(--line);background:var(--panel2);color:var(--muted);border-radius:7px;cursor:pointer}.person-actions button.del{color:#e5484d;border-color:color-mix(in srgb,#e5484d 40%,var(--line))}.person.off{opacity:.5}
-.conn-group{margin:12px 0 18px}.conn-group h3{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:0 0 4px;padding-bottom:8px;border-bottom:1px solid var(--line)}.conn-group .setting{align-items:center}.conn-input{height:34px;min-width:220px;padding:0 12px;border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:8px;font-size:12px}.conn-input[readonly]{color:var(--muted);cursor:not-allowed}.conn-sec{font-size:9px;color:var(--green);margin-left:8px;white-space:nowrap}.toggle{border:1px solid var(--line);background:var(--panel2);color:var(--muted);height:30px;padding:0 14px;border-radius:8px;cursor:pointer;font-size:11px}.toggle.on{background:color-mix(in srgb,var(--green) 16%,var(--panel));color:var(--green);border-color:color-mix(in srgb,var(--green) 34%,var(--line))}
+.conn-group{margin:12px 0 18px}.conn-group h3{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:0 0 4px;padding-bottom:8px;border-bottom:1px solid var(--line)}.conn-group .setting{align-items:center}.conn-input{height:34px;min-width:220px;padding:0 12px;border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:8px;font-size:12px}.conn-input[readonly],.conn-input:disabled{color:var(--muted);cursor:not-allowed;opacity:.72}.conn-sec{font-size:9px;color:var(--green);margin-left:8px;white-space:nowrap}.toggle{border:1px solid var(--line);background:var(--panel2);color:var(--muted);height:30px;padding:0 14px;border-radius:8px;cursor:pointer;font-size:11px}.toggle.on{background:color-mix(in srgb,var(--green) 16%,var(--panel));color:var(--green);border-color:color-mix(in srgb,var(--green) 34%,var(--line))}
+.channel-strip{margin:-1px 0 13px}.channel-card{padding:13px 17px;display:grid;grid-template-columns:minmax(150px,.55fr) repeat(3,minmax(110px,1fr));gap:12px;align-items:center}.channel-title b{font-size:12px}.channel-title small{display:block;color:var(--muted);font-size:10px;margin-top:3px}.channel-stat{padding-left:14px;border-left:1px solid var(--line)}.channel-stat b{font-size:20px}.channel-stat span,.channel-stat small{display:block;color:var(--muted);font-size:9px}.state-chip{font-size:9px;padding:4px 8px;border:1px solid var(--line);border-radius:999px;color:var(--muted);white-space:nowrap}.state-chip.ok{color:var(--green);border-color:color-mix(in srgb,var(--green) 35%,var(--line));background:color-mix(in srgb,var(--green) 9%,transparent)}.state-chip.warn{color:var(--amber)}.settings-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}.settings-note{font-size:10px;color:var(--muted);line-height:1.5}.btn.danger{color:#ff6b72;border-color:color-mix(in srgb,#ff6b72 42%,var(--line))}.preview-modal{border:1px solid var(--line);border-radius:14px;background:var(--panel);color:var(--text);padding:0;width:min(520px,calc(100vw - 30px));box-shadow:0 30px 90px rgba(0,0,0,.45)}.preview-modal::backdrop{background:rgba(3,7,15,.72);backdrop-filter:blur(5px)}.preview-head{padding:17px 19px;border-bottom:1px solid var(--line)}.preview-head h2{font-size:15px;margin:0 0 4px}.preview-head p{font-size:10px;color:var(--muted);margin:0}.preview-list{padding:14px 19px;display:grid;gap:8px}.preview-list div{padding:9px 11px;border:1px solid var(--line);border-radius:9px;background:var(--panel2);font-size:11px}.preview-actions{display:flex;justify-content:flex-end;gap:8px;padding:0 19px 17px}.save-status{font-size:10px;color:var(--muted)}
+@media(max-width:760px){.channel-card{grid-template-columns:1fr 1fr}.channel-title{grid-column:1/-1}.channel-stat{padding-left:0;border-left:0}.settings-actions{align-items:flex-start;flex-direction:column}.conn-group .setting{align-items:stretch;flex-direction:column}.conn-group .setting>div:first-child{width:100%}.conn-input{min-width:0;width:100%}.conn-sec{align-self:flex-end;margin:0}.people-list .person{align-items:flex-start;gap:10px}.people-list .person>div:first-child{min-width:0}.people-add input{min-width:100%}}
 </style>
 </head>
 <body>
@@ -95,18 +97,18 @@ html[data-theme="aurora"] .queue-stats div{background:linear-gradient(145deg,rgb
   <a href="#/log" data-page="Журнал"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h5"/></svg>Журнал</a>
   <a href="#/settings" data-page="Настройки"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H3v-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3A1.7 1.7 0 0 0 10 3V3h4v.1a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"/></svg>Настройки</a>
  </nav>
- <div class="sidebar-bottom"><div class="security"><b>● Real-time status</b><br>Метрики читаются из базы бота (только чтение). Управляющие действия отключены.</div><div class="user"><div class="avatar">AN</div><div><strong>Администратор</strong>Локальная учётная запись</div><form class="logout" method="post" action="/auth/logout"><input type="hidden" name="_csrf" value="{{CSRF_TOKEN}}"><button type="submit" title="Выйти" aria-label="Выйти">↪</button></form></div></div>
+ <div class="sidebar-bottom"><div class="security" id="writeMode"><b>● Защищённый режим</b><br>Загрузка состояния панели…</div><div class="user"><div class="avatar">AN</div><div><strong>Администратор</strong>Локальная учётная запись</div><form class="logout" method="post" action="/auth/logout"><input type="hidden" name="_csrf" value="{{CSRF_TOKEN}}"><button type="submit" title="Выйти" aria-label="Выйти">↪</button></form></div></div>
 </aside>
 <main class="main">
  <header class="topbar"><div><div class="eyebrow">Control center · live data</div><h1 id="pageTitle">Состояние системы</h1><p>Реальные показатели бота · обновлено <span id="updated">только что</span></p></div><div class="actions"><button class="btn mobile-menu" id="menuBtn">☰</button><div class="theme-switch"><button data-theme="aurora" class="active">Aurora</button><button data-theme="calm">Светлый</button><button data-theme="control">Тёмный</button><button data-theme="minimal">Минимал</button></div><button class="btn primary" id="refresh"><svg viewBox="0 0 24 24"><path d="M20 6v5h-5M4 18v-5h5M18.5 9A7 7 0 0 0 6 6.5L4 11M5.5 15A7 7 0 0 0 18 17.5l2-4.5"/></svg>Обновить</button></div></header>
- <div class="notice"><i></i><div><b>Live-режим.</b> Метрики сервера считываются с локального API панели в реальном времени.</div></div>
+ <div class="notice"><i></i><div><b>Live.</b> Метрики и состояния получены из баз и сервисов бота; секреты не выводятся.</div></div>
  <section class="kpis">
   <article class="card kpi"><div class="kpi-head"><span>Время работы</span><span class="kpi-icon"><svg viewBox="0 0 24 24"><path d="m4 13 4 4L20 5"/></svg></span></div><div class="value" id="kpiUptime">—</div><div class="trend" id="kpiUptimeTrend">работает</div></article>
   <article class="card kpi"><div class="kpi-head"><span>Операций сегодня</span><span class="kpi-icon"><svg viewBox="0 0 24 24"><path d="M5 19V9M12 19V5M19 19v-7"/></svg></span></div><div class="value" id="kpiOps">—</div><div class="trend">за 24 часа</div></article>
-  <article class="card kpi"><div class="kpi-head"><span>Средний ответ API</span><span class="kpi-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span></div><div class="value" id="kpiApi">—</div><div class="trend" id="kpiApiTrend">за сегодня</div></article>
+  <article class="card kpi"><div class="kpi-head"><span>API-чтение · 24 ч</span><span class="kpi-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span></div><div class="value" id="kpiApi">—</div><div class="trend" id="kpiApiTrend">среднее по чтениям</div></article>
   <article class="card kpi"><div class="kpi-head"><span>Требуют внимания</span><span class="kpi-icon"><svg viewBox="0 0 24 24"><path d="M12 3 2.5 20h19L12 3Z"/><path d="M12 9v5M12 17h.01"/></svg></span></div><div class="value" id="kpiAttn">—</div><div class="trend">на проверке</div></article>
-  <article class="card kpi"><div class="kpi-head"><span>Заведено по каналам</span><span class="kpi-icon"><svg viewBox="0 0 24 24"><path d="M3 12h4l2-6 4 12 2-6h4"/></svg></span></div><div class="kpi-channels"><div class="kv"><b id="kpiTgDay">—</b><span>Telegram</span><small id="kpiTgTotal"></small></div><div class="kv"><b id="kpiMailDay">—</b><span>Почта</span><small id="kpiMailTotal"></small></div><div class="kv"><b id="kpiManualDay">—</b><span>Вручную</span><small id="kpiManualTotal"></small></div></div><div class="trend">за сегодня · итог за всё время</div></article>
   </section>
+ <section class="channel-strip"><article class="card channel-card"><div class="channel-title"><b>Создано по каналам</b><small>сегодня · всего</small></div><div class="channel-stat"><b id="kpiTgDay">—</b><span>Telegram</span><small id="kpiTgTotal"></small></div><div class="channel-stat"><b id="kpiMailDay">—</b><span>Почта</span><small id="kpiMailTotal"></small></div><div class="channel-stat"><b id="kpiManualDay">—</b><span>Вручную</span><small id="kpiManualTotal"></small></div></article></section>
  <section class="grid">
   <article class="card"><div class="card-head"><div><h2>Операции по источникам</h2><span>Реальные за сегодня (audit_log)</span></div></div><div class="chart-wrap"><div class="ylabels"><span>макс</span><span></span><span></span><span>0</span></div><div class="chart" id="chart"></div></div><div class="legend"><span><i></i>Official API</span><span><i class="alt"></i>Playwright/fallback</span></div></article>
   <article class="card"><div class="card-head"><div><h2>Транспорт и сервисы</h2><span>По данным audit_log</span></div><span style="color:var(--green)">Реальные статусы</span></div><div class="health-list" id="dashServices">
@@ -114,62 +116,62 @@ html[data-theme="aurora"] .queue-stats div{background:linear-gradient(145deg,rgb
   </div></article>
  </section>
  <section class="lower">
-  <article class="card"><div class="card-head"><div><h2>Последние события</h2><span>Без содержимого заявок и персональных данных</span></div><button class="btn" style="height:28px;font-size:9px">Весь журнал</button></div><div class="activity">
-   <div class="event"><div class="event-icon">API</div><div class="event-title">Пакет из 4 операций завершён<small>Все результаты подтверждены повторным чтением</small></div><div class="time">2 мин</div></div>
-   <div class="event"><div class="event-icon">TG</div><div class="event-title">Telegram intake подключён<small>Long polling работает штатно</small></div><div class="time">14 мин</div></div>
-   <div class="event"><div class="event-icon">DB</div><div class="event-title">Проверка SQLite завершена<small>Integrity check: ok</small></div><div class="time">1 ч</div></div>
-   <div class="event"><div class="event-icon">PW</div><div class="event-title">Fallback-сессия корректно закрыта<small>Chromium освобождён после простоя</small></div><div class="time">3 ч</div></div>
-  </div></article>
-  <article class="card queue"><div class="card-head" style="padding:0 0 15px"><div><h2>Очередь обработки</h2><span>Текущее состояние</span></div><span style="color:var(--green)">Норма</span></div><div class="queue-num" id="queueNum">—</div><div class="queue-label">операций ожидают обработки</div><div class="meter"><span></span></div><div class="queue-stats" id="queueStatsDash"></div></article>
+  <article class="card"><div class="card-head"><div><h2>Последние события</h2><span>Без содержимого заявок и персональных данных</span></div><a class="btn" href="#/log" style="height:28px;font-size:9px">Весь журнал</a></div><div class="activity" id="dashEvents"><div class="queue-empty">Загрузка…</div></div></article>
+  <article class="card queue"><div class="card-head" style="padding:0 0 15px"><div><h2>Очередь обработки</h2><span>Текущее состояние</span></div><span class="state-chip" id="queueState">Загрузка</span></div><div class="queue-num" id="queueNum">—</div><div class="queue-label">операций ожидают обработки</div><div class="meter"><span id="queueMeter"></span></div><div class="queue-stats" id="queueStatsDash"></div></article>
  </section>
- <section class="page" data-page="Операции" hidden><article class="card"><div class="card-head"><div><h2>Последние операции</h2><span>Поток · обновляется с метриками</span></div><span style="color:var(--green)">Все подтверждены</span></div><div class="activity" id="opsList"></div></article></section>
- <section class="page" data-page="Очереди" hidden><article class="card queue"><div class="card-head" style="padding:0 0 15px"><div><h2>Очередь обработки</h2><span>Заявки в ожидании подтверждения</span></div><span style="color:var(--green)">Норма</span></div><div class="queue-num" id="queueTotal">—</div><div class="queue-label">операций ожидают обработки</div><div class="queue-stats" id="queueStats"></div><div class="queue-table" id="queueTable"><div class="queue-empty">Загрузка…</div></div></article></section>
- <section class="page" data-page="Сервисы" hidden><article class="card"><div class="card-head"><div><h2>Транспорт и сервисы</h2><span>Живой статус</span></div><span style="color:var(--green)">Все системы работают</span></div><div class="health-list" id="servicesList"></div></article></section>
+ <section class="page" data-page="Операции" hidden><article class="card"><div class="card-head"><div><h2>Последние операции</h2><span>Фактический поток audit_log</span></div><span class="state-chip" id="opsState">Загрузка</span></div><div class="activity" id="opsList"></div></article></section>
+ <section class="page" data-page="Очереди" hidden><article class="card queue"><div class="card-head" style="padding:0 0 15px"><div><h2>Очередь обработки</h2><span>Заявки в ожидании подтверждения</span></div><span class="state-chip" id="queuePageState">Загрузка</span></div><div class="queue-num" id="queueTotal">—</div><div class="queue-label">операций ожидают обработки</div><div class="queue-stats" id="queueStats"></div><div class="queue-table" id="queueTable"><div class="queue-empty">Загрузка…</div></div></article></section>
+ <section class="page" data-page="Сервисы" hidden><article class="card"><div class="card-head"><div><h2>Транспорт и сервисы</h2><span>Живой статус по данным бота</span></div><span class="state-chip" id="servicesState">Загрузка</span></div><div class="health-list" id="servicesList"></div></article></section>
  <section class="page" data-page="Журнал" hidden><article class="card"><div class="card-head"><div><h2>Журнал событий</h2><span>Без персональных данных</span></div><span style="color:var(--muted)">аудит</span></div><div class="activity" id="logList"></div></article></section>
  <section class="page" data-page="Настройки" hidden>
   <article class="card" style="padding:0"><div class="set-tabs" id="setTabs">
-   <button class="active" data-tab="dash">Дашборд</button><button data-tab="basic">Подключение · Основное</button><button data-tab="access">Настройки доступа к боту</button><button data-tab="secrets">Настройка подключения</button>
+   <button class="active" data-tab="dash">Вид</button><button data-tab="basic">Основное</button><button data-tab="access">Доступ</button><button data-tab="secrets">Подключение</button>
   </div>
   <div class="set-body">
    <div class="set-panel active" data-panel="dash" style="padding:17px">
-    <div class="card-head" style="padding:0 0 8px"><div><h2>Настройка дашборда</h2><span>Какие плашки показывать на главной</span></div></div>
-    <div class="setting"><div><b>Ключевые метрики (плашки)</b><small>Время работы, Операций, Средний API, Внимания</small></div><button class="toggle on" id="tglKpis">Показать</button></div>
-    <div class="setting"><div><b>Заведено по каналам</b><small>Telegram / Почта / Вручную</small></div><button class="toggle on" id="tglChannels">Показать</button></div>
-    <div class="setting"><div><b>Очередь обработки</b><small>Карточка очереди на главной</small></div><button class="toggle on" id="tglQueue">Показать</button></div>
-    <div class="setting"><div><b>Операции по источникам</b><small>Диаграмма</small></div><button class="toggle on" id="tglChart">Показать</button></div>
-    <div class="setting"><div><b>Транспорт и сервисы</b><small>Статусы лампочек</small></div><button class="toggle on" id="tglServices">Показать</button></div>
-    <div class="setting"><div><b>Автообновление метрик</b><small>Опрос /api/metrics</small></div><button class="toggle on" id="tglAuto">Вкл</button></div>
-    <div class="setting"><div><b>Интервал обновления</b><small>секунд между опросами</small></div><div class="segmented" id="tglInt"><button>3</button><button class="active">5</button><button>10</button><button>30</button></div></div>
+    <div class="card-head" style="padding:0 0 8px"><div><h2>Вид дашборда</h2><span>Состав главной страницы хранится в этом браузере</span></div></div>
+    <div class="setting"><div><b>Ключевые метрики</b><small>Время работы, операции, API, внимание</small></div><button class="toggle on" id="tglKpis">Показать</button></div>
+    <div class="setting"><div><b>Создано по каналам</b><small>Telegram / Почта / Вручную</small></div><button class="toggle on" id="tglChannels">Показать</button></div>
+    <div class="setting"><div><b>Очередь обработки</b><small>Компактная сводка очереди</small></div><button class="toggle on" id="tglQueue">Показать</button></div>
+    <div class="setting"><div><b>Операции по источникам</b><small>Диаграмма транспорта</small></div><button class="toggle on" id="tglChart">Показать</button></div>
+    <div class="setting"><div><b>Транспорт и сервисы</b><small>Состояния модулей</small></div><button class="toggle on" id="tglServices">Показать</button></div>
+    <div class="setting"><div><b>Автообновление</b><small>Опрос живых метрик</small></div><button class="toggle on" id="tglAuto">Вкл</button></div>
+    <div class="setting"><div><b>Интервал</b><small>секунд между опросами</small></div><div class="segmented" id="tglInt"><button>3</button><button class="active">5</button><button>10</button><button>30</button></div></div>
     <div class="setting"><div><b>Тема</b><small>визуальный вариант</small></div><div class="theme-switch"><button data-theme="aurora" class="active">Aurora</button><button data-theme="calm">Светлый</button><button data-theme="control">Тёмный</button><button data-theme="minimal">Минимал</button></div></div>
    </div>
    <div class="set-panel" data-panel="basic" style="padding:17px" hidden>
-    <div class="card-head" style="padding:0 0 8px"><div><h2>Подключение к боту · Основное</h2><span>Чтение config.json (редактирование — следующим шагом)</span></div></div>
+    <div class="card-head" style="padding:0 0 8px"><div><h2>Основное</h2><span>Рабочие параметры и доступность баз</span></div></div>
     <div class="kv-grid" id="cfgBasic"></div>
    </div>
    <div class="set-panel" data-panel="access" style="padding:17px" hidden>
-    <div class="card-head" style="padding:0 0 8px"><div><h2>Настройки доступа к боту</h2><span>Исполнители: ФИО и Telegram ID</span></div></div>
+    <div class="card-head" style="padding:0 0 8px"><div><h2>Доступ к Telegram-боту</h2><span>Whitelist пользователей · изменения применяются после подтверждения</span></div></div>
     <div class="people-edit" id="peopleEdit">
-     <div class="people-add"><input id="newPName" placeholder="ФИО пользователя" autocomplete="off"><input id="newPTg" placeholder="Telegram ID" inputmode="numeric" autocomplete="off"><button id="peopleAdd" class="btn">Добавить</button></div>
+     <div class="people-add"><input id="newPName" placeholder="Имя / ФИО" autocomplete="off"><input id="newPTg" placeholder="Telegram ID" inputmode="numeric" autocomplete="off"><input id="newPUser" placeholder="Username без @ (необязательно)" autocomplete="off"><button id="peopleAdd" class="btn">Добавить</button></div>
      <div class="people-list" id="cfgPeople"></div>
     </div>
-    <div style="font-size:11px;color:var(--muted);margin-top:14px">Добавление / отключение / удаление через панель — на следующем шаге (боевая запись в код бота).</div>
+    <div class="settings-actions"><div class="settings-note">Отключение запрещает доступ, но сохраняет сотрудника в справочнике исполнителей.</div><button class="btn primary" id="accessSave">Проверить изменения</button></div>
    </div>
    <div class="set-panel" data-panel="secrets" style="padding:17px" hidden>
-    <div class="card-head" style="padding:0 0 8px"><div><h2>Настройка подключения</h2><span>Параметры доступа к системам</span></div></div>
-    <div class="conn-group"><h3>Настройки IntraService</h3>
+    <div class="card-head" style="padding:0 0 8px"><div><h2>Подключение</h2><span>Секреты никогда не возвращаются в браузер</span></div></div>
+    <div class="conn-group"><h3>IntraService</h3>
      <div class="setting"><div><b>Адрес системы</b><small>base_url</small></div><input class="conn-input" id="connAddr" placeholder="https://…" autocomplete="off"></div>
-     <div class="setting"><div><b>Логин</b><small>учётная запись</small></div><input class="conn-input" id="connLogin" autocomplete="off"></div>
-     <div class="setting"><div><b>Пароль</b><small>введите, чтобы изменить (скрытый ввод)</small></div><input class="conn-input" id="connIPass" type="password" placeholder="••••••••" autocomplete="new-password"></div>
+     <div class="setting"><div><b>Логин</b><small>служебная учётная запись</small></div><input class="conn-input" id="connLogin" autocomplete="off"></div>
+     <div class="setting"><div><b>Пароль</b><small>пусто = оставить прежний</small></div><input class="conn-input" id="connIPass" type="password" placeholder="••••••••" autocomplete="new-password"><span class="conn-sec" id="connPassSet"></span></div>
     </div>
-    <div class="conn-group"><h3>Настройки Telegram</h3>
-     <div class="setting"><div><b>Токен бота</b><small>введите, чтобы изменить (скрытый ввод)</small></div><input class="conn-input" id="connToken" type="password" placeholder="••••••••" autocomplete="new-password"><span class="conn-sec" id="connTokenSet"></span></div>
-     <div class="setting"><div><b>Chat ID (администратор)</b><small>телеграм id владельца</small></div><input class="conn-input" id="connChat" autocomplete="off"></div>
+    <div class="conn-group"><h3>Telegram intake · заявки</h3>
+     <div class="setting"><div><b>Токен intake-бота</b><small>пусто = оставить прежний</small></div><input class="conn-input" id="connToken" type="password" placeholder="••••••••" autocomplete="new-password"><span class="conn-sec" id="connTokenSet"></span></div>
+     <div class="setting"><div><b>HTTP(S) proxy</b><small>можно оставить пустым</small></div><input class="conn-input" id="connProxy" placeholder="http://127.0.0.1:898" autocomplete="off"></div>
     </div>
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:16px;gap:12px"><div style="font-size:11px;color:var(--muted)">Пароль и токен — скрытый ввод. Если значение уже задано, поле оставьте пустым (она не перезапишется). Сохранение подключения — на следующем шаге.</div><button class="btn" id="connSave" style="white-space:nowrap">Сохранить подключение</button></div>
+    <div class="conn-group"><h3>Telegram · планировщик и уведомления</h3>
+     <div class="setting"><div><b>Токен планировщика</b><small>пусто = оставить прежний</small></div><input class="conn-input" id="connPlanToken" type="password" placeholder="••••••••" autocomplete="new-password"><span class="conn-sec" id="connPlanTokenSet"></span></div>
+     <div class="setting"><div><b>Chat ID владельца</b><small>получатель планов и уведомлений</small></div><input class="conn-input" id="connChat" autocomplete="off"></div>
+    </div>
+    <div class="settings-actions"><div class="settings-note">Сначала будет показан предпросмотр. Перед записью создаётся локальная резервная копия; затем сервисы перезапускаются и проверяются.</div><button class="btn primary" id="connSave">Проверить изменения</button></div>
    </div>
   </div></article>
  </section>
 </main></div><div class="toast" id="toast">Метрики обновлены</div>
+<dialog class="preview-modal" id="previewModal"><div class="preview-head"><h2>Проверь изменения</h2><p>Секретные значения здесь намеренно не показываются.</p></div><div class="preview-list" id="previewList"></div><div class="preview-actions"><button class="btn" id="previewCancel">Отмена</button><button class="btn primary" id="previewApply">Применить и перезапустить</button></div></dialog>
 <script>
 const root=document.documentElement,toast=document.getElementById('toast'),chart=document.getElementById('chart'),switcher=document.querySelector('.theme-switch'),actions=document.querySelector('.actions'),refresh=document.getElementById('refresh'),topbar=document.querySelector('.topbar');
 function placeSwitcher(){if(innerWidth<=760){if(!switcher.classList.contains('mobile-position')){switcher.classList.add('mobile-position');topbar.after(switcher)}}else if(switcher.classList.contains('mobile-position')){switcher.classList.remove('mobile-position');actions.insertBefore(switcher,refresh)}}placeSwitcher();addEventListener('resize',placeSwitcher);
@@ -185,9 +187,10 @@ const ev=(icon,title,sub,time)=>`<div class="event"><div class="event-icon">${ic
 function render(m){
  const up=m.uptime,ops=m.operationsToday,api=m.avgApiMs;
  document.getElementById('kpiUptime').textContent=up>=3600?`${Math.floor(up/3600)}ч ${Math.floor(up%3600/60)}м`:up+'с';
- document.getElementById('kpiUptimeTrend').textContent='средний ответ '+api+' мс';
+ document.getElementById('kpiUptimeTrend').textContent='панель работает';
  document.getElementById('kpiOps').textContent=fmt(ops);
- document.getElementById('kpiApi').textContent=api+' мс';
+ document.getElementById('kpiApi').textContent=api?api+' мс':'—';
+ document.getElementById('kpiApiTrend').textContent=m.apiSamples?`${m.apiSamples} чтений за 24 часа`:'нет чтений за 24 часа';
  document.getElementById('kpiAttn').textContent=m.needsAttention;
  const c=m.created||{};
  const ct=c.today||{},cTotal=c.total||{};
@@ -197,21 +200,26 @@ function render(m){
  if(document.getElementById('kpiMailTotal'))document.getElementById('kpiMailTotal').textContent='всего '+(cTotal.mail??0);
  if(document.getElementById('kpiManualDay'))document.getElementById('kpiManualDay').textContent=ct.manual??'—';
  if(document.getElementById('kpiManualTotal'))document.getElementById('kpiManualTotal').textContent='всего '+(cTotal.manual??0);
- const services=m.services.map(s=>`<div class="health-row"><i class="dot${s.status==='idle'?' idle':(s.status==='backup'?' warn':'')}"></i><div class="service">${s.name}<small>${s.sub}</small></div><div class="latency">${s.latency}</div></div>`).join('');
+ const services=m.services.map(s=>`<div class="health-row"><i class="dot${s.status==='idle'?' idle':(s.status==='backup'||s.status==='warn'?' warn':'')}"></i><div class="service">${s.name}<small>${s.sub}</small></div><div class="latency">${s.latency}</div></div>`).join('');
  if(document.getElementById('dashServices'))document.getElementById('dashServices').innerHTML=services;
  if(document.getElementById('servicesList'))document.getElementById('servicesList').innerHTML=services;
- if(document.getElementById('opsList'))document.getElementById('opsList').innerHTML=m.operations.map(o=>ev(o.icon,o.title,o.sub,o.time)).join('');
- if(document.getElementById('logList'))document.getElementById('logList').innerHTML=m.log.map(o=>ev(o.icon,o.title,o.sub,o.time)).join('');
+ const operations=(m.operations||[]).map(o=>ev(o.icon,o.title,o.sub,o.time)).join('')||'<div class="queue-empty">Событий пока нет.</div>';
+ if(document.getElementById('opsList'))document.getElementById('opsList').innerHTML=operations;
+ if(document.getElementById('dashEvents'))document.getElementById('dashEvents').innerHTML=operations;
+ if(document.getElementById('logList'))document.getElementById('logList').innerHTML=(m.log||[]).map(o=>ev(o.icon,o.title,o.sub,o.time)).join('')||'<div class="queue-empty">Журнал пуст.</div>';
  if(document.getElementById('queueNum'))document.getElementById('queueNum').textContent=m.activeQueue;
  if(document.getElementById('queueTotal'))document.getElementById('queueTotal').textContent=m.queue.total;
- const qStats=`<div><b>${m.queue.telegram}</b><span>Telegram</span></div><div><b>${m.queue.mail}</b><span>Mail</span></div><div><b>${m.queue.ai}</b><span>AI review</span></div>`;
+ const qStats=`<div><b>${m.queue.telegram}</b><span>Telegram</span></div><div><b>${m.queue.mail}</b><span>Почта</span></div><div><b>${m.queue.ai}</b><span>AI review</span></div>`;
  if(document.getElementById('queueStatsDash'))document.getElementById('queueStatsDash').innerHTML=qStats;
  if(document.getElementById('queueStats'))document.getElementById('queueStats').innerHTML=qStats;
  if(document.getElementById('queueMeter'))document.getElementById('queueMeter').style.width=Math.min(100,m.queue.total*4)+'%';
+ const setChip=(id,text,state)=>{const el=document.getElementById(id);if(el){el.textContent=text;el.className='state-chip '+state}};
+ setChip('queueState',m.queue.total?'Есть задачи':'Пусто',m.queue.total?'warn':'ok');setChip('queuePageState',m.queue.total?'Требует разбора':'Пусто',m.queue.total?'warn':'ok');
+ const degraded=(m.services||[]).some(s=>s.status==='warn'),active=(m.services||[]).filter(s=>s.status==='ok').length;setChip('servicesState',degraded?'Есть предупреждения':`${active} активны`,degraded?'warn':'ok');setChip('opsState',m.operations?.length?'Данные актуальны':'Нет событий',m.operations?.length?'ok':'');
  if(m.chart)drawChart(m.chart);
  if(m.ok===false){document.getElementById('updated').textContent='ошибка данных';return}
  document.getElementById('updated').textContent='сейчас';
- applyDashPrefs();
+ if(parseRoute().page==='Дашборд')applyDashPrefs();
 }
 const chartEl=document.getElementById('chart');
 function drawChart(c){
@@ -252,7 +260,7 @@ function cancelQueue(id){
   .catch(()=>{toast.textContent='Не удалось отменить';toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2200)});
 }
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
-const dashEls=()=>[document.querySelector('.notice'),document.querySelector('.kpis'),document.querySelector('.grid'),document.querySelector('.lower')];
+const dashEls=()=>[document.querySelector('.notice'),document.querySelector('.kpis'),document.querySelector('.channel-strip'),document.querySelector('.grid'),document.querySelector('.lower')];
 function parseRoute(){
  const h=(location.hash||'#/').split('?')[0];
  const parts=h.replace(/^#\/?/,'').split('/').filter(Boolean);
@@ -274,7 +282,7 @@ function applySettingsTab(host){
 function showPage(name,tab){
  document.querySelectorAll('.nav a').forEach(x=>x.classList.toggle('active',x.dataset.page===name));
  const isDash=name==='Дашборд';
- dashEls().forEach(el=>{if(el)el.style.display=isDash?'':'none'});
+ if(isDash)applyDashPrefs();else dashEls().forEach(el=>{if(el)el.style.display='none'});
  document.querySelectorAll('.page').forEach(p=>p.hidden=p.dataset.page!==name);
  document.getElementById('pageTitle').textContent=isDash?'Состояние системы':name;
  document.getElementById('sidebar').classList.remove('open');
@@ -300,8 +308,8 @@ document.querySelectorAll('#setTabs button').forEach(btn=>btn.onclick=()=>{
 
 /* ===== Настройки: плашки дашборда (localStorage) ===== */
 const DASHBOARD_PANELS={
- kpis:'.kpis .card.kpi:nth-child(-n+4)',
- channels:'.kpis .card.kpi:nth-child(5)',
+ kpis:'.kpis',
+ channels:'.channel-strip',
  queue:'.lower .card.queue',
  chart:'.grid .card:first-child',
  services:'.grid .card:nth-child(2)'
@@ -309,8 +317,8 @@ const DASHBOARD_PANELS={
 function applyDashPrefs(){
  const prefs=JSON.parse(localStorage.getItem('panel-dash-v1')||'{"kpis":true,"channels":true,"queue":true,"chart":true,"services":true}');
  for(const key in DASHBOARD_PANELS){
-  const els=document.querySelectorAll(DASHBOARD_PANELS[key]);
-  els.forEach(el=>{el.style.display=prefs[key]?'':'none'});
+  const els=document.querySelectorAll(DASHBOARD_PANELS[key]),visible=parseRoute().page==='Дашборд';
+  els.forEach(el=>{el.style.display=visible&&prefs[key]?'':'none'});
   const tgl=document.getElementById('tgl'+key[0].toUpperCase()+key.slice(1));
   if(tgl){tgl.classList.toggle('on',prefs[key]);tgl.textContent=prefs[key]?'Показать':'Скрыть'}
  }
@@ -331,43 +339,31 @@ function wireDashToggle(){
 }
 applyDashPrefs();wireDashToggle();
 
-/* ===== Настройки: чтение конфига бота ===== */
+/* ===== Настройки: конфигурация и безопасная запись ===== */
+let configState=null,accessDraft=[],pendingPreview=null;
 function cfgKv(label,val,ok=false){return `<div class="kv"><span>${esc(label)}</span><b class="${ok?'ok':''}">${esc(val)}</b></div>`}
-function loadBotConfig(){
- if(!document.getElementById('cfgBasic')&&!document.getElementById('cfgPeople')&&!document.getElementById('connAddr'))return;
- fetch('/api/config',{credentials:'same-origin'})
-  .then(r=>r.ok?r.json():Promise.reject(r.status))
-  .then(d=>{
-   const cfg=d.config||{};
-   if(document.getElementById('cfgBasic')){
-    const list=[];
-    if(cfg.base_url)list.push(cfgKv('IntraService адрес',cfg.base_url,true));
-    if(cfg.timezone)list.push(cfgKv('Часовой пояс',cfg.timezone));
-    if(cfg.create_window)list.push(cfgKv('Окно создания',cfg.create_window.start+'–'+cfg.create_window.end));
-    if(cfg.workdays)list.push(cfgKv('Рабочие дни',cfg.workdays.join(', ')));
-    if(cfg.template)list.push(cfgKv('Инициатор (field1014)',cfg.template.field1014));
-    if(cfg.template&&cfg.template.categoryids)list.push(cfgKv('Категории (ПАРМ)',(cfg.template.categoryids||[]).join(', ')));
-    if(cfg.template&&cfg.template.printer_categoryids)list.push(cfgKv('Категории принтер/МФУ',(cfg.template.printer_categoryids||[]).join(', ')));
-    if(cfg.template&&cfg.template.location)list.push(cfgKv('Местонахождение',cfg.template.location));
-    if(cfg.rules)list.push(cfgKv('Правила активны',Object.keys(cfg.rules).filter(k=>cfg.rules[k]===true).join(', ')||'—'));
-    document.getElementById('cfgBasic').innerHTML=list.length?list.join(''):'<div class="queue-empty">Не удалось прочитать config.json</div>';
-   }
-   if(document.getElementById('cfgPeople')){
-    const people=d.people||[];
-    document.getElementById('cfgPeople').innerHTML=people.length?people.map(p=>`<div class="person"><div><b>${esc(p.name)}</b><span class="p-id">TG: ${esc(p.tg)}${p.intra?' · исполнитель #'+esc(p.intra):''}</span></div><div class="person-actions"><button data-ac="off" data-n="${esc(p.name)}">Отключить</button><button data-ac="del" data-n="${esc(p.name)}" class="del">Удалить</button></div></div>`).join(''):'<div class="queue-empty">Не удалось прочитать список людей</div>';
-    document.querySelectorAll('#cfgPeople [data-ac]').forEach(b=>b.onclick=()=>toast.textContent='Запись доступна на следующем шаге',toast.classList.add('show'),setTimeout(()=>toast.classList.remove('show'),1600));
-   }
-   const s=d.secrets||{};
-   ['connAddr','connLogin','connChat'].forEach(id=>{const el=document.getElementById(id);if(el){const map={connAddr:s.intraservice_address,connLogin:s.intraservice_login,connChat:s.telegram_chat_id};el.value=map[id]||''}});
-   const iPass=document.getElementById('connIPass');if(iPass){iPass.value=s.intraservice_password&&s.intraservice_password.set?'':''}
-   const tok=document.getElementById('connToken');if(tok){tok.value='';const set=document.getElementById('connTokenSet');if(set)set.textContent=s.telegram_token&&s.telegram_token.set?'токен задан':'токен не задан'}
-   if(d.errors&&d.errors.length&&document.getElementById('cfgBasic'))toast.textContent=d.errors.join(' | '),toast.classList.add('show'),setTimeout(()=>toast.classList.remove('show'),2000);
-   const db=document.getElementById('cfgDb');if(db&&d.db){db.innerHTML=(d.db.intake?'intake: есть':'intake: нет')+' · '+(d.db.mail?'mail: есть':'mail: нет')}
-  })
-  .catch(()=>{if(document.getElementById('cfgPeople'))document.getElementById('cfgPeople').innerHTML='<div class="queue-empty">Ошибка загрузки конфига</div>'});
+function notify(text,ms=2200){toast.textContent=text;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),ms)}
+function setWriteUi(enabled){
+ const mode=document.getElementById('writeMode');if(mode)mode.innerHTML=enabled?'<b>● Защищённое управление</b><br>Preview · backup · confirm · restart':'<b>● Только чтение</b><br>Запись отключена конфигурацией сервера';
+ document.querySelectorAll('#accessSave,#connSave,#peopleAdd').forEach(x=>x.disabled=!enabled);
+ document.querySelectorAll('[data-panel="access"] input,[data-panel="secrets"] input').forEach(x=>x.disabled=!enabled);
 }
-const connSaveBtn=document.getElementById('connSave');
-if(connSaveBtn)connSaveBtn.onclick=()=>{toast.textContent='Сохранение подключения — на следующем шаге';toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1800)};
-route();
+function renderPeople(){const host=document.getElementById('cfgPeople');if(!host)return;host.innerHTML=accessDraft.length?accessDraft.map((p,i)=>`<div class="person ${p.enabled?'':'off'}"><div><b>${esc(p.name)}</b><span class="p-id">TG: ${esc(p.tg)}${p.username?' · @'+esc(p.username):''}${p.intra?' · Intra #'+esc(p.intra):''}</span></div><div class="person-actions"><button data-toggle="${i}">${p.enabled?'Отключить':'Включить'}</button>${p.known?'':`<button data-remove="${i}" class="del">Удалить</button>`}</div></div>`).join(''):'<div class="queue-empty">Список пуст</div>';host.querySelectorAll('[data-toggle]').forEach(b=>b.onclick=()=>{accessDraft[+b.dataset.toggle].enabled=!accessDraft[+b.dataset.toggle].enabled;renderPeople()});host.querySelectorAll('[data-remove]').forEach(b=>b.onclick=()=>{accessDraft.splice(+b.dataset.remove,1);renderPeople()})}
+function loadBotConfig(){
+ fetch('/api/config',{credentials:'same-origin'}).then(r=>r.ok?r.json():Promise.reject(r.status)).then(d=>{
+  configState=d;accessDraft=(d.people||[]).map(x=>({...x}));setWriteUi(Boolean(d.writeEnabled));
+  const cfg=d.config||{},list=[];if(cfg.base_url)list.push(cfgKv('IntraService',cfg.base_url,true));if(cfg.timezone)list.push(cfgKv('Часовой пояс',cfg.timezone));if(cfg.create_window)list.push(cfgKv('Окно создания',cfg.create_window.start+'–'+cfg.create_window.end));if(cfg.workdays)list.push(cfgKv('Рабочие дни',cfg.workdays.join(', ')));if(cfg.template)list.push(cfgKv('Заявитель',cfg.template.field1014));if(cfg.template?.location)list.push(cfgKv('Местонахождение',cfg.template.location));if(d.db)list.push(cfgKv('Базы данных',`${d.db.intake?'intake ✓':'intake ✕'} · ${d.db.mail?'mail ✓':'mail ✕'}`,d.db.intake&&d.db.mail));if(document.getElementById('cfgBasic'))document.getElementById('cfgBasic').innerHTML=list.join('')||'<div class="queue-empty">Не удалось прочитать конфигурацию</div>';
+  renderPeople();const s=d.secrets||{},map={connAddr:cfg.base_url||'',connLogin:s.intraservice_login||'',connChat:s.telegram_chat_id||'',connProxy:s.intake_proxy||''};for(const [id,val] of Object.entries(map)){const el=document.getElementById(id);if(el)el.value=val}for(const id of ['connIPass','connToken','connPlanToken']){const el=document.getElementById(id);if(el)el.value=''}
+  const mark=(id,set)=>{const el=document.getElementById(id);if(el)el.textContent=set?'задан':'не задан'};mark('connPassSet',s.intraservice_password?.set);mark('connTokenSet',s.intake_token?.set);mark('connPlanTokenSet',s.scheduler_token?.set);
+ }).catch(()=>{notify('Не удалось загрузить конфигурацию');if(document.getElementById('cfgPeople'))document.getElementById('cfgPeople').innerHTML='<div class="queue-empty">Ошибка загрузки</div>'});
+}
+document.getElementById('peopleAdd').onclick=()=>{const name=document.getElementById('newPName').value.trim(),tg=document.getElementById('newPTg').value.trim(),username=document.getElementById('newPUser').value.trim().replace(/^@/,'');if(!name||!/^[-]?\d{5,20}$/.test(tg))return notify('Укажи имя и корректный Telegram ID');if(accessDraft.some(x=>x.tg===tg))return notify('Этот Telegram ID уже есть');accessDraft.push({name,tg,username,intra:'',known:false,enabled:true});for(const id of ['newPName','newPTg','newPUser'])document.getElementById(id).value='';renderPeople()};
+async function postJson(url,body){const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify(body)}),d=await r.json().catch(()=>({error:'Некорректный ответ сервера'}));if(!r.ok)throw Error(d.error||`HTTP ${r.status}`);return d}
+async function previewSettings(payload){if(!configState?.writeEnabled)return notify('Запись настроек отключена');try{const d=await postJson('/api/config/preview',{_csrf:CSRF,revision:configState.revision,...payload});pendingPreview=d.previewToken;document.getElementById('previewList').innerHTML=d.summary.map(x=>`<div>✓ ${esc(x)}</div>`).join('');document.getElementById('previewModal').showModal()}catch(e){notify(e.message)}}
+document.getElementById('accessSave').onclick=()=>previewSettings({access:accessDraft});
+document.getElementById('connSave').onclick=()=>previewSettings({connection:{base_url:document.getElementById('connAddr').value,intraservice_login:document.getElementById('connLogin').value,intraservice_password:document.getElementById('connIPass').value,intake_token:document.getElementById('connToken').value,intake_proxy:document.getElementById('connProxy').value,scheduler_token:document.getElementById('connPlanToken').value,telegram_chat_id:document.getElementById('connChat').value}});
+document.getElementById('previewCancel').onclick=()=>{pendingPreview=null;document.getElementById('previewModal').close()};
+document.getElementById('previewApply').onclick=async()=>{if(!pendingPreview)return;const btn=document.getElementById('previewApply');btn.disabled=true;btn.textContent='Применение…';try{const d=await postJson('/api/config/apply',{_csrf:CSRF,previewToken:pendingPreview});document.getElementById('previewModal').close();pendingPreview=null;notify(d.services?.every(x=>x.active)?'Настройки применены, сервисы работают':'Настройки сохранены, проверь сервисы',3200);setTimeout(loadBotConfig,1200)}catch(e){notify(e.message,3200)}finally{btn.disabled=false;btn.textContent='Применить и перезапустить'}};
+loadBotConfig();route();
 </script>
 </body></html>
