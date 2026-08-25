@@ -86,7 +86,7 @@ html[data-theme="aurora"] .queue-stats div{background:linear-gradient(145deg,rgb
 <body>
 <div class="shell">
 <aside class="sidebar" id="sidebar">
- <div class="brand"><div class="logo"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 17V7l8-4 8 4v10l-8 4-8-4Z"/><path d="m4 7 8 4 8-4M12 11v10"/></svg></div><div><strong>IntraService Control</strong><span>Bot administration</span></div><em class="demo-tag">v0.2.0</em></div>
+ <div class="brand"><div class="logo"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 17V7l8-4 8 4v10l-8 4-8-4Z"/><path d="m4 7 8 4 8-4M12 11v10"/></svg></div><div><strong>IntraService Control</strong><span>Bot administration</span></div><em class="demo-tag">v0.2.1</em></div>
  <div class="nav-label">Обзор</div><nav class="nav">
   <a class="active" href="#/" data-page="Дашборд"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="4"/><rect x="14" y="11" width="7" height="10"/><rect x="3" y="14" width="7" height="7"/></svg>Дашборд</a>
   <a href="#/operations" data-page="Операции"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Операции</a>
@@ -314,26 +314,27 @@ const DASHBOARD_PANELS={
  chart:'.grid .card:first-child',
  services:'.grid .card:nth-child(2)'
 };
+const DASH_DEFAULTS=Object.freeze({kpis:true,channels:true,queue:true,chart:true,services:true}),DASH_PREFS_KEY='panel-dash-v2';
+function readDashPrefs(){try{return{...DASH_DEFAULTS,...JSON.parse(localStorage.getItem(DASH_PREFS_KEY)||'{}')}}catch{return{...DASH_DEFAULTS}}}
 function applyDashPrefs(){
- const prefs=JSON.parse(localStorage.getItem('panel-dash-v1')||'{"kpis":true,"channels":true,"queue":true,"chart":true,"services":true}');
+ const prefs=readDashPrefs();
  for(const key in DASHBOARD_PANELS){
   const els=document.querySelectorAll(DASHBOARD_PANELS[key]),visible=parseRoute().page==='Дашборд';
   els.forEach(el=>{el.style.display=visible&&prefs[key]?'':'none'});
   const tgl=document.getElementById('tgl'+key[0].toUpperCase()+key.slice(1));
-  if(tgl){tgl.classList.toggle('on',prefs[key]);tgl.textContent=prefs[key]?'Показать':'Скрыть'}
+  if(tgl){tgl.classList.toggle('on',prefs[key]);tgl.textContent=prefs[key]?'Вкл':'Выкл'}
  }
  return prefs;
 }
 function wireDashToggle(){
- const prefs=JSON.parse(localStorage.getItem('panel-dash-v1')||'{}');
  Object.keys(DASHBOARD_PANELS).forEach(key=>{
   const tgl=document.getElementById('tgl'+key[0].toUpperCase()+key.slice(1));
   if(!tgl)return;
   tgl.onclick=()=>{
-   const cur=JSON.parse(localStorage.getItem('panel-dash-v1')||'{}');cur[key]=!cur[key];
-   localStorage.setItem('panel-dash-v1',JSON.stringify(cur));
+   const cur=readDashPrefs();cur[key]=!cur[key];
+   localStorage.setItem(DASH_PREFS_KEY,JSON.stringify(cur));
    applyDashPrefs();
-   toast.textContent=cur[key]?'Блок показан':'Блок скрыт';toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1600);
+   toast.textContent=cur[key]?'Блок включён':'Блок скрыт';toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1600);
   };
  });
 }
