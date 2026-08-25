@@ -1,5 +1,5 @@
 [Unit]
-Description=IntraService Admin Panel beta
+Description=IntraService Admin Panel v0.2.0
 After=network.target
 
 [Service]
