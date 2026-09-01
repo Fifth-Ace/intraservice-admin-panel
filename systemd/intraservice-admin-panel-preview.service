@@ -1,5 +1,5 @@
 [Unit]
-Description=IntraService Admin Panel v0.2.1
+Description=IntraService Admin Panel v0.3.0
 After=network.target
 
 [Service]
@@ -9,6 +9,7 @@ ExecStart=/usr/bin/node /opt/intraservice-admin-panel/server.mjs
 Environment=PANEL_HOST=127.0.0.1
 Environment=PANEL_PORT=9120
 Environment=PANEL_TRUST_PROXY=1
+Environment=PANEL_ENABLE_V2=1
 # Configuration writes are opt-in. If enabled, also extend ReadWritePaths to
 # the bot directory after reviewing the security boundary.
 # Environment=PANEL_ENABLE_CONFIG_WRITE=1

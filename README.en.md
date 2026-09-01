@@ -21,19 +21,14 @@ replace the bot and does **not** connect to IntraService directly.
 
 ## Features
 
-- **Live metrics** from the bot's own SQLite databases (operations today, average
-  API latency, needs-attention, created-by-channel);
-- **Processing queue** with a **Cancel** action (only for tickets not yet created
-  in IntraService);
-- **Transport/service status lights** (Official API / Telegram intake /
-  Mail watcher / AI analyzer / Playwright fallback);
-- **Activity log** and a per-source operations chart;
-- **Settings → Connection** — safely view IntraService and Telegram parameters
-  without exposing tokens or passwords;
-- **Settings → Access** — view the allowed-user list (name + Telegram ID);
-- four visual themes (Aurora, Light, Dark, Minimal);
-- **hash-based routing** — every page has its own URL (`#/queue`,
-  `#/settings/connect`), survives reload and works with back/forward.
+- component frontend built with **Svelte 5, TypeScript and Vite**;
+- responsive dark/light themes, mobile navigation and accessible focus states;
+- live SQLite metrics plus channel and service status;
+- read-only ticket, solution-template, AI-chain, audit-log and settings pages;
+- template/log search and filters without exposing personal data;
+- secrets are represented only as `set / not set`;
+- the previous UI remains available at `/legacy/` as an instant fallback;
+- configuration and allowlist writes remain opt-in in the legacy UI.
 
 > Configuration writes are disabled by default. When explicitly enabled, changes
 > require preview and confirmation, create a backup and are written atomically.
@@ -58,6 +53,8 @@ parent/
 ```bash
 cd intraservice-admin-panel
 npm install
+npm run frontend:install
+npm run frontend:build
 npm run bootstrap-admin   # creates data/auth.json, reads the initial password
 ```
 
@@ -77,12 +74,15 @@ Override with environment variables if your layout differs:
 | `PANEL_PORT` | `9120` | listen port |
 | `PANEL_AUTH_FILE` | `data/auth.json` | auth store |
 | `PANEL_TRUST_PROXY` | `0` | set `1` only behind a trusted reverse proxy |
+| `PANEL_ENABLE_V2` | `1` | set `0` to restore the legacy UI at `/` |
+| `PANEL_ENABLE_CONFIG_WRITE` | `0` | opt-in configuration and allowlist writes |
 
 ## Run & verify
 
 ```bash
 npm run check   # syntax-check all files
 npm test        # auth self-test (no live data touched)
+npm run frontend:build
 npm start
 ```
 
@@ -92,12 +92,13 @@ Default listener: `0.0.0.0:9120`. Override with `PANEL_HOST` and `PANEL_PORT`.
 
 | Section | URL | What it shows |
 |---|---|---|
-| Dashboard | `#/` | Key metrics, chart, statuses, queue |
-| Operations | `#/operations` | Per-source operations |
-| Queue | `#/queue` | Awaiting-confirmation tickets + Cancel |
-| Services | `#/services` | Transport & service status |
-| Log | `#/log` | Audit events |
-| Settings | `#/settings` | Tabs: Dashboard, Basic, Access, Connection |
+| Overview | `#/` | Metrics, channels, services and recent events |
+| Tickets | `#/tickets` | Processing queue |
+| Templates | `#/templates` | Categories, search and solution text |
+| System | `#/system` | Services, API latency and AI chain |
+| Log | `#/log` | Filterable safe audit events |
+| Settings | `#/settings` | Read-only connection, access and secret status |
+| Legacy | `/legacy/` | Previous UI and opt-in configuration controls |
 
 ## Documentation
 

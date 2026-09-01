@@ -9,10 +9,11 @@ import {PanelConfigStore} from './panel_config.mjs';
 
 const project=path.dirname(fileURLToPath(import.meta.url));
 const dashboardFile=path.join(project,'docs','index.html');
+const frontendV2Dir=path.join(project,'frontend-v2','dist');
 const authFile=process.env.PANEL_AUTH_FILE||path.join(project,'data','auth.json');
-const botDb=process.env.PANEL_BOT_DB||path.join(project,'..','intraservice-server-bot','data','intake.sqlite3');
-const mailDb=process.env.PANEL_MAIL_DB||path.join(project,'..','intraservice-server-bot','data','mail_watcher.sqlite3');
 const botDir=process.env.PANEL_BOT_DIR||path.join(project,'..','intraservice-server-bot');
+const botDb=process.env.PANEL_BOT_DB||path.join(botDir,'data','intake.sqlite3');
+const mailDb=process.env.PANEL_MAIL_DB||path.join(botDir,'data','mail_watcher.sqlite3');
 const botConfigFile=path.join(botDir,'config.json');
 const botEnvFile=path.join(botDir,'data','intraservice.env');
 const intakeEnvFile=path.join(botDir,'data','intake.env');
@@ -22,6 +23,7 @@ const configBackupDir=process.env.PANEL_CONFIG_BACKUP_DIR||path.join(project,'da
 const host=process.env.PANEL_HOST||'0.0.0.0',port=Number(process.env.PANEL_PORT||9120);
 const sessions=new SessionStore(),limiter=new LoginLimiter(),loginTokens=new Map();
 const configWriteEnabled=process.env.PANEL_ENABLE_CONFIG_WRITE==='1',configRestartEnabled=process.env.PANEL_RESTART_SERVICES!=='0';
+const frontendV2Enabled=process.env.PANEL_ENABLE_V2!=='0';
 const configStore=new PanelConfigStore({configFile:botConfigFile,intraEnvFile:botEnvFile,intakeEnvFile,parserFile:botParserFile,accessFile:panelAccessFile,backupDir:configBackupDir}),configPreviews=new Map();
 let account=null;
 try{account=await loadAccount(authFile)}catch(error){if(error.code!=='ENOENT')throw error}
@@ -39,6 +41,13 @@ function botDbQ(sql,params=[]){
  return dbQ(botDb,true,sql,params);
 }
 function botDbOne(sql,params=[]){const out=botDbQ(sql,params);const r=out?JSON.parse(out):[];return r[0]||{}}
+const staticTypes={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml','.png':'image/png','.woff2':'font/woff2'};
+async function serveFrontendV2(req,res,url,{root=false}={}){
+ const session=requireSession(req,res);if(!session)return;if(session.mustChange)return redirect(res,'/change-password');
+ const relative=decodeURIComponent(root?url.pathname.replace(/^\/+/, ''):url.pathname.replace(/^\/v2\/?/u,''))||'index.html',target=path.resolve(frontendV2Dir,relative);
+ if(!target.startsWith(path.resolve(frontendV2Dir)+path.sep))return send(res,404,'Not found','text/plain; charset=utf-8');
+ try{const body=await fs.readFile(target);return send(res,200,body,staticTypes[path.extname(target)]||'application/octet-stream')}catch(error){if(error.code==='ENOENT')return send(res,404,'Not found','text/plain; charset=utf-8');throw error}
+}
 function dbWrite(sql,params=[]){
  // write access for admin actions (queue cancel) — mirrors bot's own queries exactly
  return dbQ(botDb,false,sql,params);
@@ -179,6 +188,8 @@ const server=http.createServer(async(req,res)=>{
  try{
   const url=new URL(req.url,'http://localhost');
   if(url.pathname==='/healthz'&&req.method==='GET')return send(res,200,JSON.stringify({ok:true,mode:'authenticated-live',authConfigured:Boolean(account)}),'application/json; charset=utf-8');
+  if(frontendV2Enabled&&req.method==='GET'&&(url.pathname==='/v2'||url.pathname.startsWith('/v2/')))return serveFrontendV2(req,res,url);
+  if(frontendV2Enabled&&req.method==='GET'&&(url.pathname==='/'||url.pathname==='/index.html'||url.pathname.startsWith('/assets/')))return serveFrontendV2(req,res,url,{root:true});
   if(url.pathname==='/api/metrics'&&req.method==='GET'){
     const session=getSession(req);if(!session)return send(res,401,JSON.stringify({error:'Unauthorized'}),'application/json; charset=utf-8');
     let m;
@@ -250,8 +261,20 @@ const server=http.createServer(async(req,res)=>{
     try{const out=botDbQ("SELECT id,tg_user_id,chat_id,status,substr(text,1,120) text,created_at FROM intake_messages WHERE status IN ('preview','needs_clarification') ORDER BY id");rows=out?JSON.parse(out):[]}
     catch(e){return send(res,502,JSON.stringify({ok:false,error:String(e.message)}),'application/json; charset=utf-8')}
     return send(res,200,JSON.stringify({ok:true,items:rows}),'application/json; charset=utf-8');
-  }
-  if(url.pathname==='/api/queue/cancel'&&req.method==='POST'){
+   }
+   if(url.pathname==='/api/log'&&req.method==='GET'){
+    const session=getSession(req);if(!session)return send(res,401,JSON.stringify({error:'Unauthorized'}),'application/json; charset=utf-8');
+    const limit=Math.max(1,Math.min(100,Number(url.searchParams.get('limit'))||50)),source=String(url.searchParams.get('source')||'').trim().slice(0,40),result=String(url.searchParams.get('result')||'').trim().slice(0,40),beforeRaw=String(url.searchParams.get('before')||''),where=[],params=[];
+    if(source){where.push('source=?');params.push(source)}if(result){where.push('result=?');params.push(result)}if(/^\d+$/u.test(beforeRaw)){where.push('id<?');params.push(beforeRaw)}
+    const clause=where.length?' WHERE '+where.join(' AND '):'',out=botDbQ(`SELECT id,action,source,result,created_at FROM audit_log${clause} ORDER BY id DESC LIMIT ${limit}`,params),items=out?JSON.parse(out):[];
+    return send(res,200,JSON.stringify({ok:true,items,hasMore:items.length===limit}),'application/json; charset=utf-8');
+   }
+   if(url.pathname==='/api/templates'&&req.method==='GET'){
+    const session=getSession(req);if(!session)return send(res,401,JSON.stringify({error:'Unauthorized'}),'application/json; charset=utf-8');
+    const out=botDbQ('SELECT id,name,category,solution,default_minutes,use_count,active FROM solution_templates ORDER BY active DESC,category,name LIMIT 250'),items=out?JSON.parse(out):[];
+    return send(res,200,JSON.stringify({ok:true,items}),'application/json; charset=utf-8');
+   }
+   if(url.pathname==='/api/queue/cancel'&&req.method==='POST'){
     const session=getSession(req);if(!session)return send(res,401,JSON.stringify({error:'Unauthorized'}),'application/json; charset=utf-8');
     const form=await readForm(req);if(form._csrf!==session.csrf)return send(res,403,JSON.stringify({error:'CSRF failed'}),'application/json; charset=utf-8');
     const id=Number(form.id);if(!Number.isInteger(id)||id<=0)return send(res,400,JSON.stringify({error:'bad id'}),'application/json; charset=utf-8');
@@ -264,7 +287,7 @@ const server=http.createServer(async(req,res)=>{
       return send(res,200,JSON.stringify({ok:true,id}),'application/json; charset=utf-8');
     }catch(e){return send(res,502,JSON.stringify({ok:false,error:String(e.message)}),'application/json; charset=utf-8')}
   }
-  if((url.pathname==='/'||url.pathname==='/index.html')&&req.method==='GET'){
+  if((url.pathname==='/'||url.pathname==='/index.html'||url.pathname==='/legacy'||url.pathname==='/legacy/')&&req.method==='GET'){
    const session=requireSession(req,res);if(!session)return;if(session.mustChange)return redirect(res,'/change-password');
    let html=await fs.readFile(dashboardFile,'utf8');html=html.replaceAll('{{CSRF_TOKEN}}',session.csrf);return send(res,200,html);
   }

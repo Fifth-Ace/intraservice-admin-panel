@@ -183,7 +183,7 @@ document.getElementById('refresh').onclick=()=>loadMetrics(true);
 
 const fmt=n=>n.toLocaleString('ru-RU');
 let autoRefresh=true,interval=10,timer,loading=false;
-const ev=(icon,title,sub,time)=>`<div class="event"><div class="event-icon">${icon}</div><div class="event-title">${title}<small>${sub}</small></div><div class="time">${time}</div></div>`;
+const ev=(icon,title,sub,time)=>`<div class="event"><div class="event-icon">${esc(icon)}</div><div class="event-title">${esc(title)}<small>${esc(sub)}</small></div><div class="time">${esc(time)}</div></div>`;
 function render(m){
  const up=m.uptime,ops=m.operationsToday,api=m.avgApiMs;
  document.getElementById('kpiUptime').textContent=up>=3600?`${Math.floor(up/3600)}ч ${Math.floor(up%3600/60)}м`:up+'с';

@@ -1,0 +1,124 @@
+/* ==========================================================================
+   IntraService Control — design tokens
+   Спокойная тема Tokyo Night (dark по умолчанию) + calm light variant
+   Типографика: IBM Plex Sans / IBM Plex Mono (со стеком фолбэков)
+   ========================================================================== */
+
+:root {
+  color-scheme: dark;
+
+  /* ---- palette: dark (Tokyo Night, приглушённая) ---- */
+  --bg-base: #1a1b26;
+  --bg-surface: #1e2132;
+  --bg-surface-2: #24283b;
+  --bg-elevated: #2b3047;
+
+  --fg-primary: #c0caf5;
+  --fg-secondary: #a9b1d6;
+  --fg-muted: #6d7699;
+  --fg-faint: #4a5170;
+  --fg-inverse: #12141f;
+
+  --border: #2b3042;
+  --border-strong: #3d4463;
+  --border-subtle: #262a3a;
+
+  --accent: #7aa2f7;
+  --accent-hover: #8fb5fc;
+  --accent-muted: rgba(122, 162, 247, 0.14);
+  --accent-fg: #10131f;
+
+  --success: #9ece6a;
+  --success-muted: rgba(158, 206, 106, 0.14);
+  --warning: #e0af68;
+  --warning-muted: rgba(224, 175, 104, 0.14);
+  --danger: #f7768e;
+  --danger-muted: rgba(247, 118, 142, 0.14);
+  --info: #7aa2f7;
+  --info-muted: rgba(122, 162, 247, 0.14);
+  --neutral: #565f89;
+  --neutral-muted: rgba(86, 95, 137, 0.22);
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.4);
+
+  /* ---- type ---- */
+  --font-sans: 'IBM Plex Sans', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+
+  --text-xs: 11px;
+  --text-sm: 12.5px;
+  --text-md: 14px;
+  --text-lg: 16px;
+  --text-xl: 20px;
+  --text-2xl: 26px;
+
+  --leading-tight: 1.25;
+  --leading-normal: 1.5;
+
+  /* ---- geometry ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-full: 999px;
+
+  --header-height: 56px;
+  --content-max: 1200px;
+
+  --z-header: 40;
+  --z-menu: 50;
+  --z-overlay: 60;
+
+  /* ---- motion ---- */
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --dur-fast: 140ms;
+  --dur-normal: 220ms;
+}
+
+[data-theme='light'] {
+  color-scheme: light;
+
+  --bg-base: #e9ebf1;
+  --bg-surface: #ffffff;
+  --bg-surface-2: #f4f5fa;
+  --bg-elevated: #ffffff;
+
+  --fg-primary: #2b3148;
+  --fg-secondary: #4a5373;
+  --fg-muted: #6f7794;
+  --fg-faint: #9aa1ba;
+  --fg-inverse: #ffffff;
+
+  --border: #d8dbe6;
+  --border-strong: #b9bfd4;
+  --border-subtle: #e2e5ee;
+
+  --accent: #3d62d6;
+  --accent-hover: #3354bc;
+  --accent-muted: rgba(61, 98, 214, 0.12);
+  --accent-fg: #ffffff;
+
+  --success: #5f8f3e;
+  --success-muted: rgba(95, 143, 62, 0.13);
+  --warning: #a9771f;
+  --warning-muted: rgba(169, 119, 31, 0.13);
+  --danger: #c84c60;
+  --danger-muted: rgba(200, 76, 96, 0.12);
+  --info: #3d62d6;
+  --info-muted: rgba(61, 98, 214, 0.12);
+  --neutral: #7a819f;
+  --neutral-muted: rgba(122, 129, 159, 0.2);
+
+  --shadow-sm: 0 1px 2px rgba(43, 49, 72, 0.08);
+  --shadow-md: 0 4px 14px rgba(43, 49, 72, 0.1);
+  --shadow-lg: 0 12px 32px rgba(43, 49, 72, 0.14);
+}

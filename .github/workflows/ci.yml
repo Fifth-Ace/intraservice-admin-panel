@@ -19,5 +19,8 @@ jobs:
         with:
           node-version: 22
       - run: npm install
+      - run: npm --prefix frontend-v2 ci
       - run: npm run ci
+      - run: npm --prefix frontend-v2 run ci
       - run: npm audit --omit=dev
+      - run: npm --prefix frontend-v2 audit --omit=dev
